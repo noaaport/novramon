@@ -1,0 +1,36 @@
+%description
+Program and tcl interface to the novra s75 family of receivers.
+
+%prep
+
+%setup
+./configure.sh
+
+%build
+cd build/rpm
+make 
+
+%install
+cd build/rpm
+make install
+
+%post
+@POSTINSTALL@
+
+%postun
+
+%clean
+cd build/rpm
+make clean
+
+%files
+%defattr(-,root,root)
+/usr/bin/novramon
+/usr/lib/novramon/novramon.tcl
+/usr/lib/novramon/pkgIndex.tcl
+/usr/libexec/novramon/novrapoll
+/usr/share/doc/novramon/example.tcl
+/usr/share/doc/novramon/novramon.README
+/usr/share/doc/novramon/LICENSE
+
+%changelog

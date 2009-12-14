@@ -1,0 +1,16 @@
+#!%TCLSH%
+#
+# $Id$
+#
+package require "novramon";
+
+::novramon::open;
+
+::novramon::poll;
+::novramon::poll;
+# repeat any number of times
+
+::novramon::report output;
+puts $output;
+
+::novramon::close;

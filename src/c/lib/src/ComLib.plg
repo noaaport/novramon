@@ -1,0 +1,75 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: ComLib - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP983.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "_LIB" /D "JSAT" /Fp"Debug/ComLib.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /c 
+"C:\S75AddressRemapConsole2\ReceiverComLib\S75functions.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP983.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP984.tmp" with contents
+[
+/nologo /out:"Debug\ComLib.lib" 
+.\Debug\A75.obj
+.\Debug\A75PesMaker.obj
+.\Debug\A75PesMakerStatus.obj
+.\Debug\A75Status.obj
+.\Debug\ATSCDevice.obj
+.\Debug\ATSCStatus.obj
+.\Debug\DeviceIdentifier.obj
+.\Debug\NetworkConfigPacket.obj
+.\Debug\NovraDevice.obj
+.\Debug\Password.obj
+.\Debug\PesMaker.obj
+.\Debug\PesMakerPIDList.obj
+.\Debug\PesMakerStatus.obj
+.\Debug\PIDList.obj
+.\Debug\PIDPacket.obj
+.\Debug\ProgramList.obj
+.\Debug\RFConfigPacket.obj
+.\Debug\s75_jleo.obj
+.\Debug\s75_v2.obj
+.\Debug\s75_v3.obj
+.\Debug\S75CA.obj
+.\Debug\S75CAPro.obj
+.\Debug\S75CAStatus.obj
+.\Debug\S75FK.obj
+.\Debug\S75FKPro.obj
+.\Debug\S75functions.obj
+.\Debug\S75IPRemap.obj
+.\Debug\S75JLEOStatus.obj
+.\Debug\S75Plus.obj
+.\Debug\S75PlusPro.obj
+.\Debug\S75PlusStatus.obj
+.\Debug\S75V2Status.obj
+.\Debug\S75V3Status.obj
+.\Debug\SatelliteDevice.obj
+.\Debug\SatelliteStatus.obj
+.\Debug\StandardPIDList.obj
+.\Debug\Status.obj
+.\Debug\StatusListner.obj
+.\Debug\StatusPacket.obj
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP984.tmp"
+<h3>Output Window</h3>
+Compiling...
+S75functions.cpp
+c:\s75addressremapconsole2\receivercomlib\s75functions.cpp(711) : warning C4018: '>' : signed/unsigned mismatch
+c:\s75addressremapconsole2\receivercomlib\s75functions.cpp(2659) : warning C4804: '<' : unsafe use of type 'bool' in operation
+c:\s75addressremapconsole2\receivercomlib\s75functions.cpp(2659) : warning C4804: '>' : unsafe use of type 'bool' in operation
+c:\s75addressremapconsole2\receivercomlib\s75functions.cpp(2574) : warning C4101: 'dev_type' : unreferenced local variable
+c:\s75addressremapconsole2\receivercomlib\s75functions.cpp(2668) : warning C4101: 'e' : unreferenced local variable
+Creating library...
+
+
+
+<h3>Results</h3>
+ComLib.lib - 0 error(s), 5 warning(s)
+</pre>
+</body>
+</html>

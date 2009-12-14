@@ -1,0 +1,25 @@
+#
+# $Id$
+#
+PKGNAME = novramon
+
+# This is for manipulation by the packaging tools
+PKGBUILDDIR =
+
+#
+# These directories are assumed to exist
+#
+PREFIX = @PREFIX@
+
+DESTDIR = ${PKGBUILDDIR}/${PREFIX}
+BINDIR = ${DESTDIR}/bin
+LIBDIR = ${DESTDIR}/lib
+LIBEXECDIR = ${DESTDIR}/libexec
+DOCDIR = ${DESTDIR}/share/doc
+
+#
+# These directories must be created
+#
+MYLIBDIR = ${LIBDIR}/${PKGNAME}
+MYLIBEXECDIR = ${LIBEXECDIR}/${PKGNAME}
+MYDOCDIR = ${DOCDIR}/${PKGNAME}

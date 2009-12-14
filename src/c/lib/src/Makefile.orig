@@ -1,0 +1,71 @@
+##
+##************************************************************************
+##
+##	File:	Makefile
+##
+##************************************************************************
+##
+
+
+############################# COMPILE MACROS #############################
+
+CCC=g++
+#CCC=gcc
+
+CCFLAGS=-c -O -Wall -g
+CPPFLAGS=-I/usr/local/include -DLINUX -DJSAT
+
+COMPILE=$(CCC) $(CCFLAGS) $(CPPFLAGS)
+
+
+############################# LINKER MACROS #############################
+
+LIBDIR=
+LDFLAGS=-L/usr/local/lib
+LIBS=libS75.a
+#LDLIBS= -lncurses 
+
+
+################################ OBJECTS ################################
+
+include ofiles.incl
+
+
+
+##################### EXECUTABLES (BUILDING RULES) ######################
+
+S75_TEST : $(LIBS) S75_TEST.o
+	$(CCC) -fno_gnu_linker -static -pthread S75_TEST.o $(LIBS) $(LDLIBS) -o S75_TEST; strip --strip-unneeded S75_TEST
+
+S75_TEST2 : $(LIBS) S75_TEST2.o
+	$(CCC) -fno_gnu_linker -static -pthread S75_TEST2.o $(LIBS) $(LDLIBS) -o S75_TEST2; strip --strip-unneeded S75_TEST2
+
+S75_PRT : $(LIBS) S75_PRT.o
+	$(CCC) -fno_gnu_linker -static -pthread S75_PRT.o $(LIBS) $(LDLIBS) -o S75_PRT; strip --strip-unneeded S75_PRT
+
+##################### LIBRARIES (BUILDING RULES) ######################
+
+libS75.a : $(LIBFILES)
+	ar -r libS75.a $(LIBFILES); ranlib libS75.a
+
+
+####################### OBJECTS (BUILDING RULES) ########################
+
+.cc.o: $<
+	$(COMPILE) $< -o $@
+
+S75_TEST.o : S75_TEST.cpp
+	$(COMPILE) S75_TEST.cpp -o S75_TEST.o
+
+S75_TEST2.o : S75_TEST2.cpp
+	$(COMPILE) S75_TEST2.cpp -o S75_TEST2.o
+
+S75_PRT.o : S75_PRT.cpp
+	$(COMPILE) S75_PRT.cpp -o S75_PRT.o
+
+############################### TARGETS #################################
+
+all : S75_TEST S75_PRT
+
+clean : 
+	rm $(OFILES) S75_TEST S75_PRT libS75.a

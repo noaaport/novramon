@@ -1,0 +1,17 @@
+#
+# $Id$
+#
+@include@ @q@../Makefile.inc@q@
+
+INSTALL = @INSTALL@
+
+DOCFILES = novramon.README LICENSE
+TARGET =
+
+all: ${TARGET}
+
+install: all
+	${INSTALL} -m 0644 ${DOCFILES}  ${MYDOCDIR}
+
+clean:
+	rm -f *~ ${TARGET}

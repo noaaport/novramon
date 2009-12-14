@@ -1,0 +1,20 @@
+// A75PesMakerStatus.cpp: implementation of the A75PesMakerStatus class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "A75PesMakerStatus.h"
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+A75PesMakerStatus::A75PesMakerStatus( void *Container )
+{
+	status = (A75_Status *)Container;
+}
+
+A75PesMakerStatus::~A75PesMakerStatus()
+{
+
+}

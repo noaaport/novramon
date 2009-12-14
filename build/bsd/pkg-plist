@@ -1,0 +1,9 @@
+@owner root
+@group wheel
+lib/novramon/novramon.tcl
+lib/novramon/pkgIndex.tcl
+libexec/novramon/novrapoll
+bin/novramon
+share/doc/novramon/example.tcl
+share/doc/novramon/novramon.README
+share/doc/novramon/LICENSE

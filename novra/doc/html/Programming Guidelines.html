@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./Programming%20Guidelines_files/filelist.xml">
+<link rel=Edit-Time-Data href="./Programming%20Guidelines_files/editdata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>Programming Guidelines</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>Novra</o:Author>
+  <o:LastAuthor>Novra</o:LastAuthor>
+  <o:Revision>2</o:Revision>
+  <o:TotalTime>1</o:TotalTime>
+  <o:Created>2007-07-03T22:27:00Z</o:Created>
+  <o:LastSaved>2007-07-03T22:28:00Z</o:LastSaved>
+  <o:Pages>1</o:Pages>
+  <o:Words>455</o:Words>
+  <o:Characters>2594</o:Characters>
+  <o:Company>Novra</o:Company>
+  <o:Lines>21</o:Lines>
+  <o:Paragraphs>5</o:Paragraphs>
+  <o:CharactersWithSpaces>3185</o:CharactersWithSpaces>
+  <o:Version>9.2720</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+	mso-font-charset:2;
+	mso-generic-font-family:auto;
+	mso-font-pitch:variable;
+	mso-font-signature:0 268435456 0 0 -2147483648 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+@list l0
+	{mso-list-id:202641146;
+	mso-list-type:hybrid;
+	mso-list-template-ids:1984198566 -1853079760 -1752164356 1674616742 1101699456 833883324 25694700 -772232306 -472730240 1993380416;}
+@list l1
+	{mso-list-id:646010040;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-886643602 -358866942 1564138478 -411001972 -958235068 1699662376 -64031044 641873392 -1370293462 493924046;}
+@list l1:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:.5in;
+	mso-level-number-position:left;
+	text-indent:-.25in;
+	mso-ansi-font-size:10.0pt;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=blue style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<p class=MsoNormal align=center style='text-align:center'><a href="index.html">Main
+Page</a> &nbsp; <a href="annotated.html">Compound List</a> &nbsp; <a
+href="files.html">File List</a> &nbsp; <a href="functions.html">Compound
+Members</a> &nbsp; <a href="globals.html">File Members</a> &nbsp; </p>
+
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=2 width="100%" align=center>
+
+</div>
+
+
+<h1 align=center style='text-align:center'>Novra Device Communications Library</h1>
+
+<h2 style='text-align:justify'>Programming Guidelines</h2>
+
+<p class=MsoNormal style='margin-bottom:12.0pt;text-align:justify'>This section
+of the documentation provides a rough guideline on how to use the Novra Device
+Communications API. &nbsp;The general steps to follow are described below.</p>
+
+<ol start=1 type=1>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>Use the
+     function <a href="s75_8h.html#bb5880ac787a21842bee4d7786fc654c">discoverDevices()</a> to fill in a <a
+     href="structNovra__DeviceList.html">Novra_DeviceList</a> structure listing
+     Novra devices on the network. &nbsp;This will turn up all Novra devices
+     that are broadcasting status on the local subnet using one of the <a
+     href="s75_8h.html#6281dc9690c982b393dc30248179e252">auto_detect_status_ports</a>. &nbsp;This step is
+     optional, but if you don't do this, or if your device is not using one of
+     the auto detect ports, then you will need to fill in aNovra_DeviceEntry
+     yourself before trying to open a device handle. </li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>Open a <a
+     href="s75_8h.html#cd3b172b61986673227837aed4eb9360">handle</a> to the device of your choice. &nbsp;You
+     can do this by passing one of the elements of the <a
+     href="structNovra__DeviceList.html">Novra_DeviceList</a> to the function <a
+     href="s75_8h.html#5828a0f83cb59a3d84ea6fc39b8ac6b8">openDevice()</a>, or by filling in your own <a
+     href="structNovra__DeviceEntry.html">Novra_DeviceEntry</a>. &nbsp;You need
+     to use the second method if the device is not using one of the auto-detect
+     status ports.  Some devices support the <a href="s75_8h.html#82f081f35905e59b3248312be8519d99">openRemoteDevice()</a> function, which allows communication with a device not on the host subnet.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>If your
+     device cannot be opened using openDevice(), the function <a
+     href="s75_8h.html#d5b2d1806e167b960f5568bbe2dba134">forceDevice()</a> can be used to force it back into
+     a state where you can communicate with it, but the current network
+     settings on the device will be replaced with defaults.  Some devices also support the function <a href="s75_8h.html#e2f3ecb9e55a76b11c7125d6762a1e50">forceRemoteDevice()</a> which can be a very dangerous function if misused.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>The type
+     of device can be determined using the function <a href="s75_8h.html#a77b0e8429024e590dd01d001ee18886">getDeviceType()</a>.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>Some devices require a password in order to communicate with
+     them.  The function <a href="s75_8h.html#fd3519334c789fe3bdb3bc3f560db55d">specifyPassword()</a> is used to provide a password
+     entry that the receiver will use to verify against its stored password in order to authorize command messages.  This only needs to be done once ... after the device has been opened.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>Use the
+     function <a href="s75_8h.html#f16f0a0aee51978eb3e43e2c7630a792">configureNetwork()</a> to change the
+     network settings of the device. &nbsp;The function <a
+     href="s75_8h.html#452ac1989c7873b2ce7ed2ea658969ca">GetAvailablePort()</a> can be used to
+     choose a destination status port from the list of auto-detect status ports
+     that is not already in use by the host computer.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>Use the
+     function <a href="s75_8h.html#0c0033eda4af57a516efbc21a097120f">configureRF()</a> to tune the device.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>Use he
+     function <a href="s75_8h.html#b889000a461afa215198007dab49c812">setPIDList()</a> to select content.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>If your
+     device is an S75CA or S75CA Pro , the function <a href="s75_8h.html#1c5300f53948fea8381d65bd0ff1e6d1">setProgramList()</a>
+     can be used to select the programs to be sent to the CAM.  For these devices, there is also a function, <a href="s75_8h.html#00cefd5a5159b022059d12d446e683d2">setCAMWatchdogTimeout()</a>, for setting a watchdog timer that will cause a reset of the CAM if it is no longer descrambling DVB packets properly.  There is also a <a href="s75_8h.html#2115546e8896adc9cb5b4bd5f5042f25">resetCAM()</a> function for doing this directly.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>If your
+     device is an S75+ Pro, S75CA Pro, or S75FK Pro, the function <a href="s75_8h.html#73ff4591f0ccf1c3724c9e8374386a44">setPAT()</a>
+     can be used to cause the receiver to generate Program Association Tables for DVB programs being forwarded from the receiver.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>If your
+     device is an S75FK or S75FK Pro, the function <a href="s75_8h.html#25b8b63f0dec123ab02ca1c652913df3">setFixedKeys()</a>
+     can be used to program the fixed keys into the receiver.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>If your
+     device is an S75 V3&nbsp;dynamic MAC support, then you can use the
+     function <a href="s75_8h.html#73b599a6b329106864295ef30d2df5c0">SetDVBMACAddress()</a> to change the
+     DVB MAC.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>Use the
+     function <a href="s75_8h.html#fc495137640bf9a19ad335f1db88dad6">getStatus()</a> to collect device
+     status this function relies on passively collected status packets that are being broadcast on the receiver's subnet.  Some devices support a <a href="s75_8h.html#77743a020b8176caef7baa7196c401d9">pollStatus()</a> function, which allows status to be retrieved from a device not on the same subnet.</li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l0 level1 lfo1;tab-stops:list .5in'>Use the
+     function <a href="s75_8h.html#f306db7529d5e283d61d1f7e95b46707">closeS75()</a> to close communications
+     with the device and free the device handle.</li>
+</ol>
+
+<p class=MsoNormal style='text-align:justify'><br>
+Other useful functions include...</p>
+
+<ul type=disc>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l1 level1 lfo2;tab-stops:list .5in'><a
+     href="s75_8h.html#43cd7fa63008e1d84ad59ea83e48fb2c">getPIDList()</a></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l1 level1 lfo2;tab-stops:list .5in'><a 
+     href="s75_8h.html#74f63fd8e532b9dab477fd13591c8b99">getProgramList()</a></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l1 level1 lfo2;tab-stops:list .5in'><a
+     href="s75_8h.html#c65782fe1440d3608d076815468d40fc">getPAT()</a></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l1 level1 lfo2;tab-stops:list .5in'><a
+     href="s75_8h.html#58307e1ddcd88f939076e76cf17f55e0">getFixedKeys()</a></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l1 level1 lfo2;tab-stops:list .5in'><a
+     href="s75_8h.html#90a56ca1f797d420821fe55c6e7498c7">getCAMWatchdogTimeout()</a></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l1 level1 lfo2;tab-stops:list .5in'><a
+     href="s75_8h.html#00901e411630a92811bd93f43d3bc255">resetS75()</a></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l1 level1 lfo2;tab-stops:list .5in'><a
+     href="s75_8h.html#cbfd4f5cc49f62da17e644d3582e4763">calcSignalStrengthPercentage()</a></li>
+ <li class=MsoNormal style='mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     text-align:justify;mso-list:l1 level1 lfo2;tab-stops:list .5in'><a
+     href="s75_8h.html#399042a705c39e21f103385015601e0e">getVersion()</a></li>
+</ul>
+
+</div>
+
+</body>
+
+</html>
+
+
+
+

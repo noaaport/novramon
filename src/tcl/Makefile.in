@@ -1,0 +1,30 @@
+#
+# $Id$
+#
+@include@ @q@../../Makefile.inc@q@
+
+INSTALL = @INSTALL@
+TCLSH = @TCLSH@
+
+LIBSOURCE = novramon.tcl.in
+LIBTARGET = novramon.tcl
+INDEXFILE = pkgIndex.tcl
+LIBFILES = novramon.tcl ${INDEXFILE}
+EXAMPLES = example.tcl
+
+TARGET = ${EXAMPLES} ${LIBTARGET}
+
+all: ${TARGET}
+
+example.tcl: example.tcl.in
+	sed -e /%TCLSH%/s##${TCLSH}# example.tcl.in > example.tcl
+
+${LIBTARGET}: ${LIBSOURCE}
+	sed -e /%MYLIBEXECDIR%/s##${MYLIBEXECDIR}# ${LIBSOURCE} > ${LIBTARGET}
+
+install: all
+	${INSTALL} -m 0644 ${LIBFILES} ${MYLIBDIR}
+	${INSTALL} -m 0644 ${EXAMPLES} ${MYDOCDIR}
+
+clean:
+	rm -f *~ Makefile ${TARGET}

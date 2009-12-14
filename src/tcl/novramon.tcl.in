@@ -1,0 +1,134 @@
+#
+# $Id$
+#
+# Copyright (c) 2009 Jose F. Nieves <nieves@ltp.upr.clu.edu>
+#
+# Permission to use, copy, modify, and distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+package provide novramon 1.0;
+
+package require cmdline;
+
+namespace eval novramon {
+
+    variable novramon;
+
+    array set novramon {};
+
+    # parameters
+    set novramon(poller) "%MYLIBEXECDIR%/novrapoll";
+}
+
+proc ::novramon::open {args} {
+
+    variable novramon;
+
+    set F [::open "|$novramon(poller)" r+];
+    set r [gets $F line];
+    if {($r <= 0) || ([regexp {^OK} $line] == 0)} {
+	return -code error "Cannot open connection to $novramon(poller).";
+    }
+
+    # These are the only internal variables (apart from the "user" variables).
+    set novramon(F) $F;
+}
+
+proc ::novramon::close {} {
+
+    variable novramon;
+
+    _verify_connection;
+    ::close $novramon(F);
+
+    unset novramon(F);
+}
+
+proc ::novramon::send {cmd} {
+
+    variable novramon;
+
+    _verify_connection;
+
+    set status [catch {
+	puts $novramon(F) $cmd;
+	flush $novramon(F);
+    } errmsg];
+
+    if {$status != 0} {
+	return -code error $errmsg;
+    }
+}
+
+proc ::novramon::poll {} {
+
+    variable novramon;
+
+    _verify_connection;
+    ::novramon::send "POLL";
+}
+
+proc ::novramon::report {line_varname} {
+
+    upvar $line_varname line;
+    variable novramon;
+
+    _verify_connection;
+    ::novramon::send "REPORT";
+    set r [gets $novramon(F) line];
+    if {$r > 0} {
+	if {[regexp {^OK:(.+)} $line match s1]} {
+	    set line $s1;
+	} elseif {[regexp {^ERROR:(.+)} $line match s1]} {
+	    return -code error $s1;
+	}
+    }
+    return $r;
+}
+
+#
+# Utility
+#
+proc ::novramon::set_var {var val} {
+    
+    variable novramon;
+
+    _verify_connection;
+    set novramon(user,$var) $val;
+}
+
+proc ::novramon::get_var {var} {
+    
+    variable novramon;
+
+    _verify_connection;
+
+    if {[info exists novramon(user.$var)]} {
+	return $novramon(user,$var);
+    }
+
+    return -code error "$var not defined";
+}
+
+#
+# private
+#
+proc ::novramon::_verify_connection {} {
+
+    variable novramon;
+
+    if {[info exists novramon(F)]} {
+	return 1;
+    }
+
+    return -code error "There is no connection to poller.";
+}

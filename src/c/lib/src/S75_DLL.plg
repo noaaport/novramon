@@ -1,0 +1,121 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: S75_DLL - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "S75_DLL_EXPORTS" /Fp"Debug/S75_DLL.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\S75LIB_WORKFOLDER\S75ComLib4\A75.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\A75PesMaker.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\A75PesMakerStatus.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\A75Status.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\ATSCDevice.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\ATSCStatus.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\DeviceIdentifier.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\NovraDevice.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\PesMaker.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\PesMakerPIDList.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\PesMakerStatus.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\PIDList.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\ProgramList.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\S75_DLL.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\s75_v2.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\s75_v3.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\S75CA.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\S75CAStatus.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\S75functions.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\S75V2Status.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\S75V3Status.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\SatelliteDevice.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\SatelliteStatus.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\StandardPIDList.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\Status.cpp"
+"C:\S75LIB_WORKFOLDER\S75ComLib4\StatusListner.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP11.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP12.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "S75_DLL_EXPORTS" /Fp"Debug/S75_DLL.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\S75LIB_WORKFOLDER\S75ComLib4\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP12.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP13.tmp" with contents
+[
+iphlpapi.lib ws2_32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"Debug/S75_DLL.pdb" /debug /machine:I386 /out:"Debug/S75_DLL.dll" /implib:"Debug/S75_DLL.lib" /pdbtype:sept 
+.\Debug\A75.obj
+.\Debug\A75PesMaker.obj
+.\Debug\A75PesMakerStatus.obj
+.\Debug\A75Status.obj
+.\Debug\ATSCDevice.obj
+.\Debug\ATSCStatus.obj
+.\Debug\DeviceIdentifier.obj
+.\Debug\NovraDevice.obj
+.\Debug\PesMaker.obj
+.\Debug\PesMakerPIDList.obj
+.\Debug\PesMakerStatus.obj
+.\Debug\PIDList.obj
+.\Debug\ProgramList.obj
+.\Debug\S75_DLL.obj
+.\Debug\s75_v2.obj
+.\Debug\s75_v3.obj
+.\Debug\S75CA.obj
+.\Debug\S75CAStatus.obj
+.\Debug\S75functions.obj
+.\Debug\S75V2Status.obj
+.\Debug\S75V3Status.obj
+.\Debug\SatelliteDevice.obj
+.\Debug\SatelliteStatus.obj
+.\Debug\StandardPIDList.obj
+.\Debug\Status.obj
+.\Debug\StatusListner.obj
+.\Debug\StdAfx.obj
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP13.tmp"
+<h3>Output Window</h3>
+Compiling...
+StdAfx.cpp
+Compiling...
+A75.cpp
+A75PesMaker.cpp
+A75PesMakerStatus.cpp
+A75Status.cpp
+ATSCDevice.cpp
+ATSCStatus.cpp
+DeviceIdentifier.cpp
+NovraDevice.cpp
+PesMaker.cpp
+PesMakerPIDList.cpp
+PesMakerStatus.cpp
+PIDList.cpp
+ProgramList.cpp
+S75_DLL.cpp
+s75_v2.cpp
+s75_v3.cpp
+S75CA.cpp
+S75CAStatus.cpp
+S75functions.cpp
+S75V2Status.cpp
+Generating Code...
+Compiling...
+S75V3Status.cpp
+SatelliteDevice.cpp
+SatelliteStatus.cpp
+StandardPIDList.cpp
+Status.cpp
+StatusListner.cpp
+C:\S75LIB_WORKFOLDER\S75ComLib4\StatusListner.cpp(265) : warning C4018: '>' : signed/unsigned mismatch
+Generating Code...
+Linking...
+   Creating library Debug/S75_DLL.lib and object Debug/S75_DLL.exp
+
+
+
+<h3>Results</h3>
+S75_DLL.dll - 0 error(s), 1 warning(s)
+</pre>
+</body>
+</html>

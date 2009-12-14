@@ -1,0 +1,43 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: TEST - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP1DE.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I ".." /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /D "JSAT" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\S75JCA Console\ReceiverComLib\TEST\S75_TEST.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP1DE.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP1DF.tmp" with contents
+[
+comlib.lib iphlpapi.lib ws2_32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/TEST.pdb" /debug /machine:I386 /out:"Debug/TEST.exe" /pdbtype:sept /libpath:"..\debug" /libpath:"C:\Program Files\Microsoft SDK\Lib" 
+".\Debug\S75_TEST.obj"
+".\Debug\StdAfx.obj"
+".\Debug\TEST.res"
+"\S75JCA Console\ReceiverComLib\Debug\ComLib.lib"
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP1DF.tmp"
+<h3>Output Window</h3>
+Compiling...
+S75_TEST.cpp
+c:\s75jca console\receivercomlib\test\s75_test.cpp(554) : warning C4244: '=' : conversion from 'unsigned short' to 'unsigned char', possible loss of data
+c:\s75jca console\receivercomlib\test\s75_test.cpp(563) : warning C4244: '=' : conversion from 'unsigned short' to 'unsigned char', possible loss of data
+c:\s75jca console\receivercomlib\test\s75_test.cpp(2098) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\s75jca console\receivercomlib\test\s75_test.cpp(2106) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\s75jca console\receivercomlib\test\s75_test.cpp(2107) : warning C4244: '=' : conversion from 'long' to 'unsigned short', possible loss of data
+c:\s75jca console\receivercomlib\test\s75_test.cpp(2114) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\s75jca console\receivercomlib\test\s75_test.cpp(2122) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+c:\s75jca console\receivercomlib\test\s75_test.cpp(2123) : warning C4244: '=' : conversion from 'long' to 'unsigned short', possible loss of data
+Linking...
+
+
+
+<h3>Results</h3>
+TEST.exe - 0 error(s), 8 warning(s)
+</pre>
+</body>
+</html>

@@ -1,0 +1,48 @@
+#
+# $Id$
+#
+
+Usage: novramon [-L] [-n | -s | -r [-p <passwd>] | -l <logfile> | -v]
+
+- Monitors the status of the novra box.
+
+  (1) If invoked without options it continuously updates the terminal screen
+      with the status information.
+
+  (2) If invoked as "novramon [-s]" it will write to stdout the status
+      information once and exit.
+
+  (3) If invoked as "novramon -l <logfile>" it will detach from the terminal
+      and become a daemon, and write the information to the specified log file
+      at the interval given in <seconds> (1 second if not specified).
+      <logfile> shoud be a full path, or relative to "/".
+
+      The columns are: (for both s75 and s75+)
+
+        - time(in secs since the epoch)
+        - signal strength
+        - Min and Max value of the VBER (Viterbi corrected bit error rate)
+	- The signal lock and data lock flags (0 or 1)
+        - Uncorrectable errors in the interval
+        - Uncorrectable errors since the program started.
+
+      The following additional parameters are output for the s75+:
+ 
+	- Demodulator Gain
+        - Noise Estimate
+        - Data Sync Loss
+        - Clock Offset
+        - Frequency Error
+
+  (4) With [-n] it will print the same information as in (3), to stdout
+      instead of the log file.
+  (5) The [-L] options enables a "long" display with addional parameters.
+  (6) "novramon -r" resets the device and exits.
+  (7) "novramon [-v]" prints a version string and exits.
+      The version string has the form
+	
+      <program_version>-<novralib_version>-<novralib_date> 
+
+- 
+Jose F. Nieves
+<nieves@ltp.upr.clu.edu>
