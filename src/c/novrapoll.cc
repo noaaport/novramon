@@ -64,7 +64,7 @@ int main(int argc, char **argv){
       log_errx_getstatus(status);
       fprintf(stdout, "ERROR: Cannot get device status.\n");
       fflush(stdout);
-    }      
+    }
   }
 
   return(status);
@@ -74,8 +74,12 @@ static void update_status(struct novra_status_st *s75status, char *cmd){
 
   if(s75status->model == S75D_V3)
     update_status_s75(s75status, cmd);
-  else if(s75status->model == S75PLUS)
+  else if((s75status->model == S75PLUS) || (s75status->model == S75PLUSPRO))
     update_status_s75p(s75status, cmd);
+  else{
+    fprintf(stdout, "ERROR: Unsupprted device.\n");
+    fflush(stdout);
+  }
 }
 
 static void update_status_s75(struct novra_status_st *s75status, char *cmd){
