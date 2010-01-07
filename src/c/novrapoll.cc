@@ -133,7 +133,7 @@ static void update_status_s75(struct novra_status_st *s75status, char *cmd){
 	  uncorrectables_period, uncorrectables);
   */
 
-  fprintf(stdout, "OK:%u %hhu %hhu %hhu %hhu %.2e %.2e %u\n",
+  fprintf(stdout, "OK:%u,%hhu,%hhu,%hhu,%hhu,%.2e,%.2e,%u\n",
 	  (unsigned int)now,
 	  s75->DataLock, s75->SignalLock,
 	  signal_strength_min, signal_strength_max,
@@ -205,8 +205,8 @@ static void update_status_s75p(struct novra_status_st *s75status, char *cmd){
   */
 
   /* The Freq_Err should really be a signed int */
-  fprintf(stdout, "OK:%u %hhu %hhu %hhu %hhu %.2e %.2e %u"
-	  " %hhu %hhu %hhu %hu %hhu %hd\n",
+  fprintf(stdout, "OK:%u,%hhu,%hhu,%hhu,%hhu,%.2e,%.2e,%u,"
+	  "%hhu,%hhu,%hhu,%hu,%hhu,%hd\n",
 	  (unsigned int)now,
 	  s75p->DataLock, s75p->SignalLock,
 	  signal_strength_min, signal_strength_max,

@@ -8,7 +8,7 @@ Q='"'
 PREFIX=usr/local
 
 INSTALL=install
-TCLSH=/usr/local/bin/tclsh8.5
+TCLSH=/usr/local/bin/tclsh8.6
 
 CORULE=".c.o:"
 CCORULE=".cc.o:"
