@@ -79,6 +79,8 @@ int main(int argc, char **argv){
   if(status == 0)
     errx(1, "Cannot discoverDevices().");
 
+  /*  print_device(&devlist.Device[0]); */
+
   s75status.model = devlist.Device[0].DeviceType;
 
   g_s75h = openDevice(&devlist.Device[0],
@@ -89,8 +91,6 @@ int main(int argc, char **argv){
 
   if(g.opt_p != NULL)
     specifyPassword(g_s75h, g.opt_p);
-
-  /*  print_device(&devlist.Device[0]); */
 
   if((g.opt_l == NULL) && (g.opt_n == 0) && (g.opt_r == 0) &&
       (g.opt_s == 0)){
