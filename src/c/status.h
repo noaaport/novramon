@@ -12,6 +12,7 @@ struct novra_status_st {
   struct S75D_Status_V3 s75;
   struct S75Plus_Status s75p;
   int signal_strength_percentage;
+  int status;	/* return code from get_status() */
 };
 
 int get_status(S75_Handle s75h, struct novra_status_st *s75status);

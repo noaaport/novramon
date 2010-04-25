@@ -53,18 +53,15 @@ int main(int argc, char **argv){
   if(g_s75h == NULL)
     log_errx(1, "Cannot openDevice()");
 
-  fprintf(stdout, "OK: Device poller ready.\n");
+  fprintf(stdout, "OK:Device poller ready.\n");
   fflush(stdout);
 
   while((fgets(inputbuffer, inputbuffer_len, stdin) != NULL) && (status == 0)){
     status = get_status(g_s75h, &s75status);
-    if(status == 0)
-      update_status(&s75status, inputbuffer);
-    else{
+    if(status != 0)
       log_errx_getstatus(status);
-      fprintf(stdout, "ERROR: Cannot get device status.\n");
-      fflush(stdout);
-    }
+
+    update_status(&s75status, inputbuffer);
   }
 
   return(status);
@@ -76,10 +73,8 @@ static void update_status(struct novra_status_st *s75status, char *cmd){
     update_status_s75(s75status, cmd);
   else if((s75status->model == S75PLUS) || (s75status->model == S75PLUSPRO))
     update_status_s75p(s75status, cmd);
-  else{
-    fprintf(stdout, "ERROR: Unsupprted device.\n");
-    fflush(stdout);
-  }
+  else
+    log_warnx("%s\n", "Unsupported device.");
 }
 
 static void update_status_s75(struct novra_status_st *s75status, char *cmd){
@@ -103,22 +98,22 @@ static void update_status_s75(struct novra_status_st *s75status, char *cmd){
    * we don't use it.
    */
 
-  if(s75->VBER < vber_min)
-    vber_min = s75->VBER;
+  if(s75status->status == 0){
+    if(s75->VBER < vber_min)
+      vber_min = s75->VBER;
 
-  if(s75->VBER > vber_max)
-    vber_max = s75->VBER;
+    if(s75->VBER > vber_max)
+      vber_max = s75->VBER;
 
-  if(s75->SignalStrength < signal_strength_min)
-    signal_strength_min = s75->SignalStrength;
+    if(s75->SignalStrength < signal_strength_min)
+      signal_strength_min = s75->SignalStrength;
 
-  if(s75->SignalStrength > signal_strength_max)
-    signal_strength_max = s75->SignalStrength;
+    if(s75->SignalStrength > signal_strength_max)
+      signal_strength_max = s75->SignalStrength;
 
-  uncorrectables_period += s75->Uncorrectables;
-  uncorrectables += s75->Uncorrectables;
-
-  now = time(NULL);
+    uncorrectables_period += s75->Uncorrectables;
+    uncorrectables += s75->Uncorrectables;
+  }
 
   if(strcmp(cmd, "POLL\n") == 0)
     return;
@@ -133,6 +128,13 @@ static void update_status_s75(struct novra_status_st *s75status, char *cmd){
 	  uncorrectables_period, uncorrectables);
   */
 
+  if(s75status->status != 0){
+      fprintf(stdout, "ERROR:Cannot get device status.\n");
+      fflush(stdout);
+      return;
+  }
+
+  now = time(NULL);
   fprintf(stdout, "OK:%u,%hhu,%hhu,%hhu,%hhu,%.2e,%.2e,%u\n",
 	  (unsigned int)now,
 	  s75->DataLock, s75->SignalLock,
@@ -168,28 +170,28 @@ static void update_status_s75p(struct novra_status_st *s75status, char *cmd){
    * in s75+.
    */
 
-  if(s75p->VBER < vber_min)
-    vber_min = s75p->VBER;
+  if(s75status->status == 0){
+    if(s75p->VBER < vber_min)
+      vber_min = s75p->VBER;
 
-  if(s75p->VBER > vber_max)
-    vber_max = s75p->VBER;
+    if(s75p->VBER > vber_max)
+      vber_max = s75p->VBER;
 
-  if(s75status->signal_strength_percentage < signal_strength_min)
-    signal_strength_min = s75status->signal_strength_percentage;
+    if(s75status->signal_strength_percentage < signal_strength_min)
+      signal_strength_min = s75status->signal_strength_percentage;
 
-  if(s75status->signal_strength_percentage > signal_strength_max)
-    signal_strength_max = s75status->signal_strength_percentage;
+    if(s75status->signal_strength_percentage > signal_strength_max)
+      signal_strength_max = s75status->signal_strength_percentage;
 
-  if(s75p->DemodulatorGain < demodulator_gain_min)
-    demodulator_gain_min = s75p->DemodulatorGain;
+    if(s75p->DemodulatorGain < demodulator_gain_min)
+      demodulator_gain_min = s75p->DemodulatorGain;
 
-  if(s75p->DemodulatorGain > demodulator_gain_max)
-    demodulator_gain_max = s75p->DemodulatorGain;
+    if(s75p->DemodulatorGain > demodulator_gain_max)
+      demodulator_gain_max = s75p->DemodulatorGain;
 
-  uncorrectables_period += s75p->Uncorrectables;
-  uncorrectables += s75p->Uncorrectables;
-
-  now = time(NULL);
+    uncorrectables_period += s75p->Uncorrectables;
+    uncorrectables += s75p->Uncorrectables;
+  }
 
   if(strcmp(cmd, "POLL\n") == 0)
     return;
@@ -203,6 +205,14 @@ static void update_status_s75p(struct novra_status_st *s75status, char *cmd){
 	  s75p->SignalLock, s75p->DataLock,
 	  uncorrectables_period, uncorrectables);
   */
+
+  if(s75status->status != 0){
+      fprintf(stdout, "ERROR:Cannot get device status.\n");
+      fflush(stdout);
+      return;
+  }
+
+  now = time(NULL);
 
   /* The Freq_Err should really be a signed int */
   fprintf(stdout, "OK:%u,%hhu,%hhu,%hhu,%hhu,%.2e,%.2e,%u,"

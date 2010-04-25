@@ -23,19 +23,24 @@ int get_status(S75_Handle s75h, struct novra_status_st *s75status){
     memset(&s75status->s75p, 0, sizeof(struct S75Plus_Status));
     if(getStatus(s75h, (BYTE*)&s75status->s75p) != S75_OK)
       status = -1;
-    /*
-     * The SignalStrength in this model is deprecated and is returned
-     * as 0, and likewise with RFStatusValid.
-     */
-    s75status->signal_strength_percentage =
-      calcSignalStrengthPercentage(s75h,
-				   s75status->s75p.AGCA,
-				   s75status->s75p.DemodulatorGain,
-				   s75status->s75p.SignalLock,
-				   s75status->s75p.DataLock);
+
+    if(status == 0){
+      /*
+       * The SignalStrength in this model is deprecated and is returned
+       * as 0, and likewise with RFStatusValid.
+       */
+      s75status->signal_strength_percentage =
+	calcSignalStrengthPercentage(s75h,
+				     s75status->s75p.AGCA,
+				     s75status->s75p.DemodulatorGain,
+				     s75status->s75p.SignalLock,
+				     s75status->s75p.DataLock);
+    }
   }else{
     status = 1;
   }
+
+  s75status->status = status;
 
   return(status);
 }
