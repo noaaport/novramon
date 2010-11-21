@@ -1,0 +1,7 @@
+#
+# In CentOS, auto_path has /usr/lib in x86 and /usr/lib64 for x64_64
+#
+[ -d /usr/lib64/novramon ] && {
+	cd /usr/lib64
+	rm -rf novramon
+}

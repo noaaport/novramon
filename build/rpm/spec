@@ -18,6 +18,7 @@ make install
 @POSTINSTALL@
 
 %postun
+@POSTUNINSTALL@
 
 %clean
 cd build/rpm
@@ -25,12 +26,6 @@ make clean
 
 %files
 %defattr(-,root,root)
-/usr/bin/novramon
-/usr/lib/novramon/novramon.tcl
-/usr/lib/novramon/pkgIndex.tcl
-/usr/libexec/novramon/novrapoll
-/usr/share/doc/novramon/example.tcl
-/usr/share/doc/novramon/novramon.README
-/usr/share/doc/novramon/LICENSE
+@PLIST@
 
 %changelog
