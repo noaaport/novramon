@@ -1,0 +1,69 @@
+##
+##************************************************************************
+##
+##	File:	Makefile
+##
+##************************************************************************
+##
+
+
+############################# COMPILE MACROS #############################
+
+CCC=g++
+#CCC=gcc
+CCFLAGS=
+#CPPFLAGS=-c -g -Wall -I/usr/local/include -DLINUX -DJSAT
+CPPFLAGS=-c -g -Wall -I/usr/local/include -DAPPLE -DJSAT
+
+COMPILE=$(CCC) $(CCFLAGS) $(CPPFLAGS)
+
+
+############################# LINKER MACROS #############################
+
+LIBDIR=
+LDFLAGS=-L/usr/local/lib
+LIBS=libRecCom.a
+LDLIBS= -lncurses 
+
+
+################################ OBJECTS ################################
+
+include ofiles.incl
+
+
+
+##################### EXECUTABLES (BUILDING RULES) ######################
+
+DEBUG_REC_TEST : $(LIBS) REC_TEST.o
+	$(CCC) -fno_gnu_linker -static -pthread REC_TEST.o $(LIBS) $(LDLIBS) -o DEBUG_REC_TEST;
+
+REC_TEST : $(LIBS) REC_TEST.o
+	$(CCC) -fno_gnu_linker -static -pthread REC_TEST.o $(LIBS) $(LDLIBS) -o REC_TEST; strip --strip-unneeded REC_TEST
+
+TEST_ITOA : $(LIBS) TEST_ITOA.o
+	$(CCC) -fno_gnu_linker -static -pthread TEST_ITOA.o $(LIBS) $(LDLIBS) -o TEST_ITOA; strip --strip-unneeded TEST_ITOA
+
+##################### LIBRARIES (BUILDING RULES) ######################
+
+libRecCom.a : $(LIBFILES)
+
+	ar -r libRecCom.a $(LIBFILES); ranlib libRecCom.a
+
+
+####################### OBJECTS (BUILDING RULES) ########################
+
+.cc.o: $<
+	$(COMPILE) $< -o $@
+
+REC_TEST.o : REC_TEST.cpp
+	$(COMPILE) REC_TEST.cpp -o REC_TEST.o
+
+TEST_ITOA.o : TEST_ITOA.cpp
+	$(COMPILE) TEST_ITOA.cpp -o TEST_ITOA.o
+
+############################### TARGETS #################################
+
+all : REC_TEST TEST_ITOA
+
+clean : 
+	rm -f $(OFILES) REC_TEST libRecCom.a
