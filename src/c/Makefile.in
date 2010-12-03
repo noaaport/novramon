@@ -10,6 +10,7 @@ EXTRA_CFLAGS = -c -Wall -g -DLINUX
 EXTRA_CXXFLAGS = -c -Wall -g -DLINUX
 LDFLAGS = -Llib
 
+NOVRA_SRC_DIR = lib/src-v2
 NOVRA_LIBS = -lS75
 EXTRA_LIBS = -lncurses
 
@@ -32,7 +33,7 @@ TARGET = ${MON_TARGET} ${POLL_TARGET}
 all: ${TARGET}
 
 ${HEADERS}:
-	cd lib/src; ${MAKE}
+	cd ${NOVRA_SRC_DIR}; ${MAKE}
 
 @CORULE@ ${HEADERS}
 	${CC} ${CFLAGS} ${EXTRA_CFLAGS} $<
@@ -53,5 +54,6 @@ install: all
 	${INSTALL} -m 0755 ${POLL_TARGET} ${MYLIBEXECDIR}
 
 clean:
-	cd lib/src; ${MAKE} clean
+	cd ${NOVRA_SRC_DIR}; ${MAKE} clean
 	rm -f *~ ${TARGET} ${MON_OBJECTS} ${POLL_OBJECTS} ${COMMON_OBJECTS}
+	rm -f Makefile
