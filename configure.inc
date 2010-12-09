@@ -6,6 +6,7 @@
 INCLUDE=".include"
 Q='"'
 PREFIX=usr/local
+MANDIR=man
 
 INSTALL=install
 TCLSH=/usr/local/bin/tclsh8.6
@@ -49,6 +50,7 @@ case $os in
 	INCLUDE=include
 	Q=
 	PREFIX=usr
+	MANDIR=share/man
 	TCLSH=/usr/bin/tclsh
 	CORULE="%.o: %.c"
 	CCORULE="%.o: %.cc"
@@ -70,6 +72,7 @@ configure_default () {
       -e "/@include@/ s||$INCLUDE|" \
       -e "/@q@/ s||$Q|g" \
       -e "/@PREFIX@/ s||$PREFIX|g" \
+      -e "/@MANDIR@/ s||$MANDIR|g" \
       -e "/@INSTALL@/ s||$INSTALL|" \
       -e "/@TCLSH@/ s||$TCLSH|" \
       -e "/@CORULE@/ s||$CORULE|g" \

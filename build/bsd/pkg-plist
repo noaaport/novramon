@@ -7,3 +7,4 @@ bin/novramon
 share/doc/novramon/example.tcl
 share/doc/novramon/novramon.README
 share/doc/novramon/LICENSE
+man/man1/novramon.1.gz

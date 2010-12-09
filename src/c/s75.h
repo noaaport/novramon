@@ -6,9 +6,9 @@
 
 #include "status.h"
 
-void print_status_s75(struct novra_status_st *s75status, int f_longdisplay);
-void print_statusw_s75(struct novra_status_st *s75status, int f_longdisplay);
+void print_status_s75(struct novra_status_st *nvstatus, int f_longdisplay);
+void print_statusw_s75(struct novra_status_st *nvstatus, int f_longdisplay);
 void log_status_s75(const char *fname,
-		    struct novra_status_st *s75status, int f_longdisplay);
+		    struct novra_status_st *nvstatus, int f_longdisplay);
 
 #endif

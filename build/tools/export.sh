@@ -3,19 +3,21 @@
 # $Id$
 #
 
-tmpdir=tmp
+masterhost="http://svn.1-loop.net"
+masterrepo="novramonrepo"
+mastersite=${masterhost}/${masterrepo}
 
 # read name and version
 . ../../VERSION
 
+tmpdir=tmp
 rm -r -f $tmpdir
 mkdir $tmpdir
 
 cd $tmpdir
-cvs -d :ext:nieves@opengrads.cvs.sourceforge.net:/cvsroot/opengrads \
-    export -D now -d ${name}-${version} ${name}
+svn export ${mastersite}/${name}/trunk ${name}-${version}
 
 tar -czf ../${name}-${version}.tgz ${name}-${version}
 
 cd ..
-rm -r $tmpdir
+rm -rf $tmpdir

@@ -1,0 +1,82 @@
+.\"
+.\" $Id$
+.\"
+.\" See LICENSE
+.\"
+.TH NOVRAMON 1 "5 DECEMBER, 2010"
+.SH NAME
+novramon \- Program monitor for the Novra Noaaport receivers 
+.SH SYNOPSIS
+\fBnovramon\fR [-L] [-n | -s | -r [-p \fIpasswd\fR] | -l \fIlogfile\fR | -v]
+
+.SH DESCRIPTION
+\fInovramon\fR monitors the status of the novra box (s75, s75+ and s200).
+It can be invoked with various options to control its behavior.
+
+If invoked without options it continuously updates the terminal screen
+with the status information. The following invocation forms modify
+this behavior.
+
+.TP
+\fB-L\fR
+Output additional parameters related to the traffic in and out of
+the device.
+
+.TP
+\fB-l\fR \fIlogfile\fR
+In this mode, \fBnovramon\fR will detach from the terminal
+and become a daemon, and write the information to the specified log file at
+500 milliseconds intervals. The \fIlogfile\fR should be a full path.
+The columns are (for s75. s75+ and s200):
+
+    time (in secs since the epoch)
+    Signal Strength
+    Min and Max value of the VBER
+    The signal lock and data lock flags (0 or 1)
+    Uncorrectable errors in the interval
+    Uncorrectable errors since the program started.
+
+The following additional parameters are output for the s75+:
+
+    Data Sync Loss
+    Frequency Offset
+
+and the following for the s200:
+
+    Signal Strength (in dbm)
+    Carrier to Noise ratio
+    Data Sync Loss
+    Frequency Offset
+
+.TP
+\fB-n\fR
+Same as \fB-l\fR, but the output is wtitten to \fIstdout\fR.
+
+.TP
+\fB-s\fR
+Write to stdout the status information once and exit.
+
+
+.TP
+\fB-r\fR
+Reset the device and exit. For the
+S75 and S7+, the \fB-p\fR \fIpassword\fR must be given in this case.
+
+.TP
+Print a version string and exit. The version string has the form
+	
+    \fIprogram_version\fR-\fInovralib_version\fR-\fInovralib_date\fR
+
+.LP
+.SS FILES
+/usr/local/share/doc/novramon/
+.LP
+.SS VERSION
+3.0r1 - december 2010
+.SS AUTHOR 
+Jose F. Nieves
+.br
+nieves@ltp.upr.clu.edu
+.br
+Copyright 2005-2010
+.br

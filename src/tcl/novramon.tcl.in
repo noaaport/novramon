@@ -112,7 +112,7 @@ proc ::novramon::get_var {var} {
 
     _verify_connection;
 
-    if {[info exists novramon(user.$var)]} {
+    if {[info exists novramon(user,$var)]} {
 	return $novramon(user,$var);
     }
 

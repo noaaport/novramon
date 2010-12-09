@@ -13,67 +13,67 @@
 #include "s75_private.h"
 #include "s75.h"
 
-void print_status_s75(struct novra_status_st *s75status, int f_longdisplay){
+void print_status_s75(struct novra_status_st *nvstatus, int f_longdisplay){
 
-  struct S75D_Status_V3 *s75 = &s75status->s75;
+  struct novra_param_st *s75 = &nvstatus->param;
 
-  fprintf(stdout, "      Frequency: %f\n", s75->Frequency);
-  fprintf(stdout, "     SymbolRate: %f\n", s75->SymbolRate);
-  fprintf(stdout, "       LNBFault: %s\n", lnbstr[s75->LNBFault]);
-  fprintf(stdout, "     SignalLock: %s\n", lockstr[s75->SignalLock]);
-  fprintf(stdout, "       DataLock: %s\n", lockstr[s75->DataLock]);
-  fprintf(stdout, " SignalStrength: %hhu\n", s75->SignalStrength);
-  fprintf(stdout, "           VBER: %.2e\n", s75->VBER);
-  fprintf(stdout, "      ErrorRate: %hhu\n", s75->Uncorrectables);
+  fprintf(stdout, "      Frequency: %d\n", s75->carrier_frequency);
+  fprintf(stdout, "     SymbolRate: %d\n", s75->symbol_rate);
+  fprintf(stdout, "       LNBFault: %s\n", lnbstr[s75->lnb_fault]);
+  fprintf(stdout, "     SignalLock: %s\n", lockstr[s75->signal_lock]);
+  fprintf(stdout, "       DataLock: %s\n", lockstr[s75->data_lock]);
+  fprintf(stdout, " SignalStrength: %d\n", s75->signal_strength_as_percentage);
+  fprintf(stdout, "           VBER: %.2e\n", s75->vber);
+  fprintf(stdout, "      ErrorRate: %d\n", s75->uncorrectables);
 
   if(f_longdisplay != 0){
-    fprintf(stdout, "   EthTxPackets: %hu\n", s75->EthernetTransmit);
-    fprintf(stdout, "  EthRcvPackets: %hu\n", s75->EthernetReceive);
-    fprintf(stdout, "    EthTxErrors: %hu\n", s75->EthernetTransmitError);
-    fprintf(stdout, "  EthPacketDrop: %hu\n", s75->EthernetPacketDropped);
+    fprintf(stdout, "   EthTxPackets: %d\n", s75->ethernet_transmit);
+    fprintf(stdout, "  EthRcvPackets: %d\n", s75->ethernet_receive);
+    fprintf(stdout, "    EthTxErrors: %d\n", s75->ethernet_transmit_error);
+    fprintf(stdout, "  EthPacketDrop: %d\n", s75->ethernet_packet_dropped);
   }
 }
 
-void print_statusw_s75(struct novra_status_st *s75status, int f_longdisplay){
+void print_statusw_s75(struct novra_status_st *nvstatus, int f_longdisplay){
 
-  struct S75D_Status_V3 *s75 = &s75status->s75;
+  struct novra_param_st *s75 = &nvstatus->param;
   static unsigned int uncorrectables = 0;
 
-  uncorrectables += s75->Uncorrectables;
+  uncorrectables += s75->uncorrectables;
 
   move(0,0);
 
-  printw("      Frequency: %f\n", s75->Frequency);
-  printw("     SymbolRate: %f\n", s75->SymbolRate);
-  printw("       LNBFault: %s\n", lnbstr[s75->LNBFault]);
-  printw("     SignalLock: %s\n", lockstr[s75->SignalLock]);
-  printw("       DataLock: %s\n", lockstr[s75->DataLock]);
-  printw(" SignalStrength: %hhu\n", s75->SignalStrength);
-  printw("           VBER: %.2e\n", s75->VBER);
-  printw("         Errors: %u\n", uncorrectables);
-  printw("      ErrorRate: %hhu\n", s75->Uncorrectables);
+  printw("      Frequency: %d\n", s75->carrier_frequency);
+  printw("     SymbolRate: %d\n", s75->symbol_rate);
+  printw("       LNBFault: %s\n", lnbstr[s75->lnb_fault]);
+  printw("     SignalLock: %s\n", lockstr[s75->signal_lock]);
+  printw("       DataLock: %s\n", lockstr[s75->data_lock]);
+  printw(" SignalStrength: %d\n", s75->signal_strength_as_percentage);
+  printw("           VBER: %.2e\n", s75->vber);
+  printw("         Errors: %d\n", uncorrectables);
+  printw("      ErrorRate: %d\n", s75->uncorrectables);
 
   if(f_longdisplay != 0){
-    printw("   EthTxPackets: %hu\n", s75->EthernetTransmit);
-    printw("  EthRcvPackets: %hu\n", s75->EthernetReceive);
-    printw("    EthTxErrors: %hu\n", s75->EthernetTransmitError);
-    printw("  EthPacketDrop: %hu\n", s75->EthernetPacketDropped);
+    printw("   EthTxPackets: %d\n", s75->ethernet_transmit);
+    printw("  EthRcvPackets: %d\n", s75->ethernet_receive);
+    printw("    EthTxErrors: %d\n", s75->ethernet_transmit_error);
+    printw("  EthPacketDrop: %d\n", s75->ethernet_packet_dropped);
   }
 
   refresh();
 }
 
-void log_status_s75(const char *fname, struct novra_status_st *s75status,
+void log_status_s75(const char *fname, struct novra_status_st *nvstatus,
 		    int f_longdisplay){
 
-  struct S75D_Status_V3 *s75 = &s75status->s75;
+  struct novra_param_st *s75 = &nvstatus->param;
   FILE *f;
   time_t now;
   static unsigned int uncorrectables = 0;
   static unsigned int uncorrectables_period = 0;
 
-  uncorrectables_period += s75->Uncorrectables;
-  uncorrectables += s75->Uncorrectables;
+  uncorrectables_period += s75->uncorrectables;
+  uncorrectables += s75->uncorrectables;
 
   now = time(NULL);
 
@@ -81,21 +81,21 @@ void log_status_s75(const char *fname, struct novra_status_st *s75status,
   if(f == NULL)
     log_errn_open(fname);
 
-  fprintf(f, "%u %hhu %hhu %hhu %hhu %.2e %u %u",
+  fprintf(f, "%u %d %d %d %d %.2e %u %u",
 	  (unsigned int)now,
-	  s75->LNBFault,
-	  s75->SignalLock,
-	  s75->DataLock,
-	  s75->SignalStrength,
-	  s75->VBER,
+	  s75->lnb_fault,
+	  s75->signal_lock,
+	  s75->data_lock,
+	  s75->signal_strength_as_percentage,
+	  s75->vber,
 	  uncorrectables_period, uncorrectables);
 
   if(f_longdisplay != 0){
-    fprintf(f, " %hu %hu %hu %hu",
-	    s75->EthernetTransmit,
-	    s75->EthernetReceive,
-	    s75->EthernetTransmitError,
-	    s75->EthernetPacketDropped);
+    fprintf(f, " %d %d %d %d",
+	    s75->ethernet_transmit,
+	    s75->ethernet_receive,
+	    s75->ethernet_transmit_error,
+	    s75->ethernet_packet_dropped);
   }
   fprintf(f, "\n");
 

@@ -6,19 +6,20 @@
 INSTALL = @INSTALL@
 CC = cc
 CXX = c++
-EXTRA_CFLAGS = -c -Wall -g -DLINUX
-EXTRA_CXXFLAGS = -c -Wall -g -DLINUX
-LDFLAGS = -Llib
+EXTRA_CFLAGS = -c -Wall -g
+EXTRA_CXXFLAGS = -c -Wall -g
+LDFLAGS = -Llib/v3
 
-NOVRA_SRC_DIR = lib/src-v2
-NOVRA_LIBS = -lS75
+NOVRA_SRC_DIR = lib/v3/src
+NOVRA_LIBS = -lRecCom
 EXTRA_LIBS = -lncurses
 
-HEADERS = lib/s75.h lib/linux_windows_types.h \
-	status.h util.h version.h \
-	s75.h s75p.h s75_private.h err.h logfile.h
-COMMON_SOURCES = status.cc err.c util.c s75.cc s75p.cc logfile.c 
-COMMON_OBJECTS = status.o err.o util.o s75.o s75p.o logfile.o
+HEADERS = lib/v3/RecComLib.h \
+	version.h \
+	err.h logfile.h util.h status.h \
+	s75.h s75p.h s200.h s75_private.h
+COMMON_SOURCES = err.c util.c logfile.c status.cc s75.cc s75p.cc s200.cc
+COMMON_OBJECTS = err.o util.o logfile.o status.o s75.o s75p.o s200.o
 
 MON_SOURCE = novramon.cc
 MON_TARGET = novramon

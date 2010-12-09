@@ -9,7 +9,7 @@
 # p = prerelase (release candidate)
 # r = release
 name=novramon
-branch=2.0
+branch=3.0
 releaselevel=p
-releasenumber=1.3
+releasenumber=1.1
 version=${branch}.${releaselevel}${releasenumber}

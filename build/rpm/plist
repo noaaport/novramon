@@ -1,7 +1,8 @@
-/usr/local/lib/novramon/novramon.tcl
-/usr/local/lib/novramon/pkgIndex.tcl
-/usr/local/libexec/novramon/novrapoll
-/usr/local/bin/novramon
-/usr/local/share/doc/novramon/example.tcl
-/usr/local/share/doc/novramon/novramon.README
-/usr/local/share/doc/novramon/LICENSE
+/usr/bin/novramon
+/usr/lib/novramon/novramon.tcl
+/usr/lib/novramon/pkgIndex.tcl
+/usr/libexec/novramon/novrapoll
+/usr/share/doc/novramon/example.tcl
+/usr/share/doc/novramon/novramon.README
+/usr/share/doc/novramon/LICENSE
+/usr/share/man/man1/novramon.1.gz

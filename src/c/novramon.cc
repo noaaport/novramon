@@ -27,7 +27,7 @@
 #include "status.h"
 
 #define NOVRAMON_IDENT "novramon"
-#define NOVRAMON_OPENDEVICE_TIMEOUT_MS 5000
+#define NOVRAMON_CONNECT_TIMEOUT_MS 5000
 
 static struct {
   int opt_v;	/* print version and exit */
@@ -39,10 +39,11 @@ static struct {
   char *opt_p;  /* password for s75+ to use with [-r] */
 } g = {0, 0, 0, 0, 0, NULL, NULL};
 
-static S75_Handle g_s75h = NULL;
+static ReceiverSearch g_rs;
+static ReceiverList g_rl;
+static Receiver *g_r = NULL;
 static int g_f_quit = 0;
 
-/* static void print_device(struct Novra_DeviceEntry *dev); */
 static void init_curses(void);
 static void kill_curses(void);
 static void parse_args(int argc, char **argv);
@@ -51,11 +52,14 @@ static void init_signals(void);
 static void signal_handler(int signo);
 static void cleanup(void);
 
+/* static void print_receiver(Receiver *r); */
+static int specify_password(Receiver *r, char *password);
+
 int main(int argc, char **argv){
 
-  struct Novra_DeviceList devlist;
   int status = 0;
-  struct novra_status_st s75status;
+  NOVRA_ERRORS novra_error;
+  struct novra_status_st nvstatus;
   const char *logfile = NULL;
 
   set_progname(NOVRAMON_IDENT);	/* init err lib */
@@ -75,22 +79,27 @@ int main(int argc, char **argv){
       errx(1, "The logfile must be a full path.");
   }
 
-  status = discoverDevices(&devlist);
-  if(status == 0)
-    errx(1, "Cannot discoverDevices().");
+  g_rs.discoverLocal(&g_rl);
+  if(g_rl.count() == 0)
+    errx(1, "No local receivers found.\n");
+  else if(g_rl.count() > 1) 
+    errx(1, "Only one receiver is supported.\n");
 
-  /*  print_device(&devlist.Device[0]); */
+  g_r = g_rl.getReceiver(0);
+  nvstatus.device_type = g_r->getParameter(DEVICE_TYPE).asShort();
 
-  s75status.model = devlist.Device[0].DeviceType;
+  if(g_r->connect(NOVRAMON_CONNECT_TIMEOUT_MS, novra_error) == false){
+    g_r = NULL;
+    errx(1, "Cannot connect to device.");
+  }
 
-  g_s75h = openDevice(&devlist.Device[0],
-		      NOVRAMON_OPENDEVICE_TIMEOUT_MS,
-		      status);
-  if(g_s75h == NULL)
-    errx(1, "Cannot openDevice()");
+  /*  print_receiver(g_r); */
 
-  if(g.opt_p != NULL)
-    specifyPassword(g_s75h, g.opt_p);
+  if(g.opt_p != NULL){
+    specify_password(g_r, g.opt_p);
+    if(g_r->connected(NOVRAMON_CONNECT_TIMEOUT_MS) == false)
+      errx(1, "Cannot connect to device.");
+  }
 
   if((g.opt_l == NULL) && (g.opt_n == 0) && (g.opt_r == 0) &&
       (g.opt_s == 0)){
@@ -98,15 +107,14 @@ int main(int argc, char **argv){
   }
 
   if(g.opt_r){
-    status = resetS75(g_s75h);
-    if(status != S75_OK)
+    if(g_r->reset() == false)
       errx(1, "Could not reset the device.");
   }else if(g.opt_s){
-    status = get_status(g_s75h, &s75status);
+    status = get_status(g_r, &nvstatus);
     if(status != 0){
       log_errx_getstatus(status);
    } else
-      print_status(&s75status, g.opt_L);
+      print_status(&nvstatus, g.opt_L);
   }else{
     if(g.opt_l != NULL){
       if(daemon(0, 0) == -1)
@@ -116,17 +124,17 @@ int main(int argc, char **argv){
     }
 
     while((g_f_quit == 0) && (status == 0)){
-      status = get_status(g_s75h, &s75status);
+      status = get_status(g_r, &nvstatus);
 
       if(status != 0){
 	log_errx_getstatus(status);
       }else if(g.opt_n){
-	log_status(NULL, &s75status, g.opt_L);
+	log_status(NULL, &nvstatus, g.opt_L);
       }else{
 	if(g.opt_l == NULL)
-	  print_statusw(&s75status, g.opt_L);
+	  print_statusw(&nvstatus, g.opt_L);
 	else{
-	  log_status(logfile, &s75status, g.opt_L);
+	  log_status(logfile, &nvstatus, g.opt_L);
 	}
       }
     }
@@ -202,9 +210,9 @@ static void cleanup(void){
 
   logfile_fclose();
   
-  if(g_s75h != NULL){
-    closeS75(g_s75h);
-    g_s75h = NULL;
+  if(g_r != NULL){
+    g_r->disconnect();
+    g_r = NULL;
   }
 }
 
@@ -225,23 +233,28 @@ static void signal_handler(int signo){
   g_f_quit = 1;
 }
 
+static int specify_password(Receiver *r, char *password){
+
+  if(r->hasParameter(PASSWORD)){
+    if(r->login(password) == false)
+      return(1);
+  }
+
+  return(0);
+}
+
 /*
-static void print_device(struct Novra_DeviceEntry *dev){
-  
-  int i;
+static void print_receiver(Receiver *r){
 
-  for(i = 0; i <= 3; ++i)
-    fprintf(stdout, "%u ", dev->DeviceIP[i]);
+  int device_type = r->getParameter(DEVICE_TYPE).asShort();
 
-  fprintf(stdout, "\n");
+  fprintf(stdout, "%d\n", device_type);
+  fprintf(stdout, "%s\n", r->enumToString(DEVICE_TYPE, device_type).c_str());
 
-  for(i = 0; i <= 5; ++i)
-    fprintf(stdout, "%u ", dev->DeviceMAC[i]);
-
-  fprintf(stdout, "\n");
-
-  fprintf(stdout, "%hu\n", dev->StatusPort);
-  fprintf(stdout, "%hu\n", dev->DeviceType);
+  fprintf(stdout, "IP address: %s\n",
+          r->getParameter(RECEIVER_IP).asString().c_str());
+  fprintf(stdout, "MAC: %s\n", 
+         r->getParameter( RECEIVER_MAC ).asString().c_str());
 
   exit(0);
 }
