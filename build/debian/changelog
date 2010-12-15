@@ -1,5 +1,5 @@
-novramon (3.0.p1.1-1) stable; urgency=low
+novramon (3.0.p1.2-1) stable; urgency=low
 
   * Initial debian package release
 
- -- Jose F Nieves <nieves@ltp.upr.clu.edu>  Sun, 05 Dec 2010 16:31:14 -0400
+ -- Jose F Nieves <nieves@ltp.upr.clu.edu>  Wed, 15 Dec 2010 17:19:50 -0400
