@@ -19,10 +19,12 @@ Usage: novramon [-L] [-n | -s | -r [-p <passwd>] | -l <logfile> | -v]
 
       The columns are (for s75. s75+ and s200):
 
-        - time(in secs since the epoch)
-        - Signal Strength
+        - Time (unix seconds)
+	- LNB fault flag (0 = no fault)
+	- Signal Lock Flag (1 = locked)
+	- Data Lock Flag (1 = locked)
+        - Signal Strength (percentage)
         - Min and Max value of the VBER (Viterbi corrected bit error rate)
-	- The signal lock and data lock flags (0 or 1)
         - Uncorrectable errors in the interval
         - Uncorrectable errors since the program started.
 

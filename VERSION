@@ -11,5 +11,5 @@
 name=novramon
 branch=3.0
 releaselevel=p
-releasenumber=1.2
+releasenumber=1.3
 version=${branch}.${releaselevel}${releasenumber}
