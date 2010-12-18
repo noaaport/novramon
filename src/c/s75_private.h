@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: s75_private.h 1 2009-12-14 01:44:00Z nieves $
  */
 #ifndef S75_PRIVATE_H
 #define S75_PRIVATE_H

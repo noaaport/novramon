@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: status.cc 40 2010-12-09 22:03:38Z jfnieves $
  */
 #include <string.h>
 #include "err.h"
@@ -7,6 +7,8 @@
 #include "s75p.h"
 #include "s200.h"
 #include "status.h"
+
+static void fill_novra_param(Receiver *r, struct novra_param_st *p);
 
 #if 0
 static void check_param(Receiver *r);
@@ -219,7 +221,74 @@ static void check_param(Receiver *r){
 }
 #endif
 
-static void fill_novra_param(Receiver *r, struct novra_param_st *p);
+void init_novra_status(struct novra_status_st *nvstatus){
+  /*
+   * Initialize the global counters and the min, max values.
+   */
+  nvstatus->last = time(NULL);
+  nvstatus->uncorrectables_total = 0;
+  reinit_novra_status(nvstatus);
+}
+
+void reinit_novra_status(struct novra_status_st *nvstatus){
+  /*
+   * Initialize the only the the min, max values.
+   */
+  nvstatus->signal_strength_as_percentage_min = 255;
+  nvstatus->signal_strength_as_percentage_max = 0;
+  nvstatus->signal_strength_as_dbm_min = 100;
+  nvstatus->signal_strength_as_dbm_max = -100;
+  nvstatus->carrier_to_noise_min = 100.0;
+  nvstatus->carrier_to_noise_max = 0.0;
+  nvstatus->vber_min = 1.0;
+  nvstatus->vber_max = 0.0;
+}
+
+void update_status(struct novra_status_st *nvstatus){
+  /*
+   * This is called after get_status() to update the min,max
+   * values in the loging interval (when the loging interal
+   * spans several device report cycles).
+   */
+
+  if(nvstatus->param.signal_strength_as_percentage <
+     nvstatus->signal_strength_as_percentage_min){
+    nvstatus->signal_strength_as_percentage_min =
+      nvstatus->param.signal_strength_as_percentage;
+  }
+
+  if(nvstatus->param.signal_strength_as_percentage >
+     nvstatus->signal_strength_as_percentage_max){
+    nvstatus->signal_strength_as_percentage_max =
+      nvstatus->param.signal_strength_as_percentage;
+  }
+
+  if(nvstatus->param.signal_strength_as_dbm <
+     nvstatus->signal_strength_as_dbm_min){
+    nvstatus->signal_strength_as_dbm_min =
+      nvstatus->param.signal_strength_as_dbm;
+  }
+
+  if(nvstatus->param.signal_strength_as_dbm >
+     nvstatus->signal_strength_as_dbm_max){
+    nvstatus->signal_strength_as_dbm_max =
+      nvstatus->param.signal_strength_as_dbm;
+  }
+
+  if(nvstatus->param.carrier_to_noise < nvstatus->carrier_to_noise_min)
+    nvstatus->carrier_to_noise_min = nvstatus->param.carrier_to_noise;
+
+  if(nvstatus->param.carrier_to_noise > nvstatus->carrier_to_noise_max)
+    nvstatus->carrier_to_noise_max = nvstatus->param.carrier_to_noise;
+
+  if(nvstatus->param.vber < nvstatus->vber_min)
+    nvstatus->vber_min = nvstatus->param.vber;
+
+  if(nvstatus->param.vber > nvstatus->vber_max)
+    nvstatus->vber_max = nvstatus->param.vber;
+
+  nvstatus->uncorrectables_total += nvstatus->param.uncorrectables;
+}
 
 int get_status(Receiver *r, struct novra_status_st *nvstatus){
   /*
@@ -270,14 +339,14 @@ void print_statusw(struct novra_status_st *nvstatus, int f_longdisplay){
 }
 
 void log_status(const char *fname, struct novra_status_st *nvstatus,
-		int f_longdisplay){
+		int f_longdisplay, int logperiod){
 
   if(isdevice_s75(nvstatus))
-    log_status_s75(fname, nvstatus, f_longdisplay);
+    log_status_s75(fname, nvstatus, f_longdisplay, logperiod);
   else if(isdevice_s75p(nvstatus))
-    log_status_s75p(fname, nvstatus, f_longdisplay);
+    log_status_s75p(fname, nvstatus, f_longdisplay, logperiod);
   else if(isdevice_s200(nvstatus))
-    log_status_s200(fname, nvstatus, f_longdisplay);
+    log_status_s200(fname, nvstatus, f_longdisplay, logperiod);
   else
     log_warnx("Invalid value of nvstatus->device_type: %d",
 	      nvstatus->device_type);

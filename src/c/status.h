@@ -1,9 +1,10 @@
 /*
- * $Id$
+ * $Id: status.h 40 2010-12-09 22:03:38Z jfnieves $
  */
 #ifndef STATUS_H
 #define STATUS_H
 
+#include <time.h>
 #include "lib/v3/RecComLib.h"
 
 /*
@@ -63,14 +64,30 @@ struct novra_status_st {
   int status;		/* return code from get_status() */
   int device_type;	/* R_S200, ... */
   struct novra_param_st  param;
+  /* calculated when loging period spans several device periods */
+  time_t last;	/* time of last report */
+  int signal_strength_as_percentage_min;
+  int signal_strength_as_percentage_max;
+  int signal_strength_as_dbm_min;
+  int signal_strength_as_dbm_max;
+  double carrier_to_noise_min;
+  double carrier_to_noise_max;
+  double vber_min;
+  double vber_max;
+  unsigned int uncorrectables_total;
 };
+
+void init_novra_status(struct novra_status_st *nvstatus);
+void reinit_novra_status(struct novra_status_st *nvstatus);
+void update_status(struct novra_status_st *nvstatus);
 
 int get_status(Receiver *r, struct novra_status_st *nvstatus);
 void print_status(struct novra_status_st *nvstatus, int f_longdisplay);
 void print_statusw(struct novra_status_st *nvstatus, int f_longdisplay);
 void log_status(const char *fname,
 		struct novra_status_st *nvstatus,
-		int f_longdisplay);
+		int f_longdisplay,
+		int logperiod);
 
 int isdevice_s75(struct novra_status_st *nvstatus);
 int isdevice_s75p(struct novra_status_st *nvstatus);

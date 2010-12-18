@@ -9,6 +9,7 @@
 #include <time.h>
 #include <getopt.h>
 #include <string.h>
+#include <inttypes.h>
 #include "err.h"
 #include "logfile.h"
 #include "s75_private.h"
@@ -105,32 +106,34 @@ void print_statusw_s200(struct novra_status_st *nvstatus, int f_longdisplay){
 }
 
 void log_status_s200(const char *fname, struct novra_status_st *nvstatus,
-		     int f_longdisplay){
+		     int f_longdisplay, int logperiod){
 
   struct novra_param_st *s200 = &nvstatus->param;
   FILE *f;
   time_t now;
-  static unsigned int uncorrectables = 0;
-  static unsigned int uncorrectables_period = 0;
 
-  uncorrectables_period += s200->uncorrectables;
-  uncorrectables += s200->uncorrectables;
+  /* Update the derived (min, max) parameters */
+  update_status(nvstatus);
 
   now = time(NULL);
+  if((logperiod != 0) && (now < nvstatus->last + logperiod))
+    return;
+
+  nvstatus->last = now;
 
   f = logfile_fopen(fname);
   if(f == NULL)
     log_errn_open(fname);
 
-  fprintf(f, "%u %d %d %d %d %.2e %u %u %d %.1f %d %d",
-	  (unsigned int)now,
+  fprintf(f, "%" PRIuMAX " %d %d %d %d %.2e %u %u %d %.1f %d %d",
+	  (uintmax_t)now,
 	  s200->lnb_fault,
 	  s200->signal_lock,
 	  s200->data_lock,
 	  s200->signal_strength_as_percentage,
 	  s200->vber,
-	  uncorrectables_period,
-	  uncorrectables,
+	  s200->uncorrectables,
+	  nvstatus->uncorrectables_total,
 	  s200->signal_strength_as_dbm,
 	  s200->carrier_to_noise,
 	  s200->data_sync_loss,
@@ -145,8 +148,20 @@ void log_status_s200(const char *fname, struct novra_status_st *nvstatus,
 	    s200->dvb_accepted,
 	    s200->dvb_scrambled);
   }
+
+  if(logperiod != 0){
+    fprintf(f, " %d %d %.2e %.2e %d %d %.1f %.1f",
+	    nvstatus->signal_strength_as_percentage_min,
+	    nvstatus->signal_strength_as_percentage_max,
+	    nvstatus->vber_min,
+	    nvstatus->vber_max,
+	    nvstatus->signal_strength_as_dbm_min,
+	    nvstatus->signal_strength_as_dbm_max,
+	    nvstatus->carrier_to_noise_min,
+	    nvstatus->carrier_to_noise_max);
+  }
   fprintf(f, "\n");
   logfile_fclose();
 
-  uncorrectables_period = 0;
+  reinit_novra_status(nvstatus);
 }

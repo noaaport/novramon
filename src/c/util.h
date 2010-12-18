@@ -3,7 +3,7 @@
  *
  * See LICENSE
  *
- * $Id$
+ * $Id: util.h 1 2009-12-14 01:44:00Z nieves $
  */
 #ifndef NOVRAMON_UTIL_H
 #define NOVRAMON_UTIL_H

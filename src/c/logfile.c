@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: logfile.c 1 2009-12-14 01:44:00Z nieves $
  */
 #include "logfile.h"
 

@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: s75p.cc 40 2010-12-09 22:03:38Z jfnieves $
  */
 #include <unistd.h>
 #include <stdio.h>
@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <curses.h>
 #include <time.h>
-#include <getopt.h>
 #include <string.h>
+#include <inttypes.h>
 #include "err.h"
 #include "logfile.h"
 #include "s75_private.h"
@@ -78,32 +78,34 @@ void print_statusw_s75p(struct novra_status_st *nvstatus, int f_longdisplay){
 }
 
 void log_status_s75p(const char *fname, struct novra_status_st *nvstatus,
-		     int f_longdisplay){
+		     int f_longdisplay, int logperiod){
 
   struct novra_param_st *s75p = &nvstatus->param;
   FILE *f;
   time_t now;
-  static unsigned int uncorrectables = 0;
-  static unsigned int uncorrectables_period = 0;
 
-  uncorrectables_period += s75p->uncorrectables;
-  uncorrectables += s75p->uncorrectables;
+  /* Update the derived (min, max) parameters */
+  update_status(nvstatus);
 
   now = time(NULL);
+  if((logperiod != 0) && (now < nvstatus->last + logperiod))
+    return;
+
+  nvstatus->last = now;
 
   f = logfile_fopen(fname);
   if(f == NULL)
     log_errn_open(fname);
 
-  fprintf(f, "%u %d %d %d %d %.2e %u %u %d %d",
-	  (unsigned int)now,
+  fprintf(f, "%" PRIuMAX " %d %d %d %d %.2e %u %u %d %d",
+	  (uintmax_t)now,
 	  s75p->lnb_fault,
 	  s75p->signal_lock,
 	  s75p->data_lock,
 	  s75p->signal_strength_as_percentage,
 	  s75p->vber,
-	  uncorrectables_period,
-	  uncorrectables,
+	  s75p->uncorrectables,
+	  nvstatus->uncorrectables_total,
 	  s75p->data_sync_loss,
 	  s75p->frequency_offset);
 
@@ -116,8 +118,16 @@ void log_status_s75p(const char *fname, struct novra_status_st *nvstatus,
 	    s75p->dvb_accepted,
 	    s75p->dvb_scrambled);
   }
+
+  if(logperiod != 0){
+    fprintf(f, " %d %d %.2e %.2e",
+	    nvstatus->signal_strength_as_percentage_min,
+	    nvstatus->signal_strength_as_percentage_max,
+	    nvstatus->vber_min,
+	    nvstatus->vber_max);
+  }
   fprintf(f, "\n");
   logfile_fclose();
 
-  uncorrectables_period = 0;
+  reinit_novra_status(nvstatus);
 }

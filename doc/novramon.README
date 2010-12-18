@@ -2,9 +2,11 @@
 # $Id$
 #
 
-Usage: novramon [-L] [-n | -s | -r [-p <passwd>] | -l <logfile> | -v]
+Monitors the status of the novra box (s75, s75+ and s200) -
 
-- Monitors the status of the novra box (s75, s75+ and s200)
+Usage:
+
+  novramon [-L] [-n | -s | -r [-p <passwd>] | -l <logfile> | -v] [-t <secs>]
 
   (1) If invoked without options it continuously updates the terminal screen
       with the status information.
@@ -14,8 +16,9 @@ Usage: novramon [-L] [-n | -s | -r [-p <passwd>] | -l <logfile> | -v]
 
   (3) If invoked as ``novramon -l <logfile>'' it will detach from the terminal
       and become a daemon, and write the information to the specified log file
-      at the report interval of the device (twice per second).
-      <logfile> should be a full path.
+      at the report interval of the device (twice per second). The loging
+      interval can be adjusted by passng the [-t] option (see below).
+      The <logfile> argument should be a full path.
 
       The columns are (for s75. s75+ and s200):
 
@@ -24,7 +27,7 @@ Usage: novramon [-L] [-n | -s | -r [-p <passwd>] | -l <logfile> | -v]
 	- Signal Lock Flag (1 = locked)
 	- Data Lock Flag (1 = locked)
         - Signal Strength (percentage)
-        - Min and Max value of the VBER (Viterbi corrected bit error rate)
+        - VBER (Viterbi corrected bit error rate)
         - Uncorrectable errors in the interval
         - Uncorrectable errors since the program started.
 
@@ -42,10 +45,29 @@ Usage: novramon [-L] [-n | -s | -r [-p <passwd>] | -l <logfile> | -v]
 
   (4) With "-n" it will print the same information as in (3), to stdout
       instead of the log file.
+
   (5) The "-L" options enables a "long" display with additional parameters.
-  (6) "novramon -r" resets the device and exits. The s75+ and s200 require,
+
+  (6) The "-t <seconds>" option can given to specify the loging interval
+      when the program is executed in loging mode ("-l" or "-n" options).
+      In this case, the parameters indicated above correspond to the
+      instantaneous values at the end of the interval, and the following
+      additional columns are written:
+
+      For the s75 and s75+
+
+        - Min and Max values of the signal strength (in %)
+        - Min and Max values of the VBER
+
+      and in addition, for the s200,
+
+        - Min and Max values of the signal strength (in dbm)
+        - Min and Max values of the C/N ratio
+
+  (7) "novramon -r" resets the device and exits. The s75+ and s200 require,
       in addition, that the [-p <paswword>] be given. 
-  (7) "novramon -v" prints a version string and exits.
+
+  (8) "novramon -v" prints a version string and exits.
       The version string has the form
 	
       <program_version>-<novralib_version>-<novralib_date> 

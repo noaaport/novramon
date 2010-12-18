@@ -3,7 +3,7 @@
  *
  * See LICENSE
  *
- * $Id$
+ * $Id: err.c 1 2009-12-14 01:44:00Z nieves $
  */
 #include <assert.h>
 #include <unistd.h>

@@ -7,7 +7,8 @@
 .SH NAME
 novramon \- Program monitor for the Novra Noaaport receivers 
 .SH SYNOPSIS
-\fBnovramon\fR [-L] [-n | -s | -r [-p \fIpasswd\fR] | -l \fIlogfile\fR | -v]
+\fBnovramon\fR [-L] [-t \fIsecs\fR]
+[-n | -s | -r [-p \fIpasswd\fR] | -l \fIlogfile\fR | -v]
 
 .SH DESCRIPTION
 \fInovramon\fR monitors the status of the novra box (s75, s75+ and s200).
@@ -18,15 +19,12 @@ with the status information. The following invocation forms modify
 this behavior.
 
 .TP
-\fB-L\fR
-Output additional parameters related to the traffic in and out of
-the device.
-
-.TP
 \fB-l\fR \fIlogfile\fR
 In this mode, \fBnovramon\fR will detach from the terminal
 and become a daemon, and write the information to the specified log file at
-500 milliseconds intervals. The \fIlogfile\fR should be a full path.
+500 milliseconds intervals. The loging interval can be changed with the
+\fB-t\fR option (see below).
+The \fIlogfile\fR should be a full path.
 The columns are (for s75, s75+ and s200):
 
     Time (unix seconds)
@@ -34,7 +32,7 @@ The columns are (for s75, s75+ and s200):
     Signal Lock Flag (1 = locked)
     Data Lock Flag (1 = locked)
     Signal Strength (percentage)
-    Min and Max value of the VBER
+    VBER
     Uncorrectable errors in the interval
     Uncorrectable errors since the program started.
 
@@ -51,6 +49,11 @@ and the following for the s200:
     Frequency Offset
 
 .TP
+\fB-L\fR
+Output additional parameters related to the traffic in and out of
+the device.
+
+.TP
 \fB-n\fR
 Same as \fB-l\fR, but the output is wtitten to \fIstdout\fR.
 
@@ -58,6 +61,21 @@ Same as \fB-l\fR, but the output is wtitten to \fIstdout\fR.
 \fB-s\fR
 Write to stdout the status information once and exit.
 
+.TP
+\fB-t\fR \fIsecs\fR
+Specifies the loging interval when executed in loging mode
+(\fB-l\fR or \fB-n\fR specified).
+In this case, the parameters indicated above correspond to the
+instantaneous values at the end of the interval, and the following
+additional columns are written. For the s75, s75+ and s200,
+
+    Min and Max values of the signal strength (in %)
+    Min and Max values of the VBER
+
+and in addition, for the s200,
+
+    Min and Max values of the signal strength (in dbm)
+    Min and Max values of the C/N ratio
 
 .TP
 \fB-r\fR
@@ -65,6 +83,7 @@ Reset the device and exit. For the
 S75 and S7+, the \fB-p\fR \fIpassword\fR must be given in this case.
 
 .TP
+\fB-v\fR
 Print a version string and exit. The version string has the form
 	
     \fIprogram_version\fR-\fInovralib_version\fR-\fInovralib_date\fR

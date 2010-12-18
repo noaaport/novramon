@@ -9,7 +9,7 @@
  * novramon -v
  * novramon -r [-p <password>]
  * novramon [-L] -s
- * novramon [-L] -l <logfile>
+ * novramon [-L] -l <logfile> [-t <seconds>]
  * novramon [-L] -n
  */
 #include <unistd.h>
@@ -36,8 +36,9 @@ static struct {
   int opt_n;	/* print the data like [-l] but to stdout */
   int opt_r;    /* resets the device and exit */
   char *opt_l;  /* logfile (logger only) */
+  int opt_t;	/* log interval in seconds - uint16 */
   char *opt_p;  /* password for s75+ to use with [-r] */
-} g = {0, 0, 0, 0, 0, NULL, NULL};
+} g = {0, 0, 0, 0, 0, 0, NULL, NULL};
 
 static ReceiverSearch g_rs;
 static ReceiverList g_rl;
@@ -78,6 +79,8 @@ int main(int argc, char **argv){
     if(logfile[0] != '/')
       errx(1, "The logfile must be a full path.");
   }
+
+  init_novra_status(&nvstatus);
 
   g_rs.discoverLocal(&g_rl);
   if(g_rl.count() == 0)
@@ -129,12 +132,12 @@ int main(int argc, char **argv){
       if(status != 0){
 	log_errx_getstatus(status);
       }else if(g.opt_n){
-	log_status(NULL, &nvstatus, g.opt_L);
+	log_status(NULL, &nvstatus, g.opt_L, g.opt_t);
       }else{
 	if(g.opt_l == NULL)
 	  print_statusw(&nvstatus, g.opt_L);
 	else{
-	  log_status(logfile, &nvstatus, g.opt_L);
+	  log_status(logfile, &nvstatus, g.opt_L, g.opt_t);
 	}
       }
     }
@@ -162,8 +165,9 @@ static void parse_args(int argc, char **argv){
 
   int c;
   int status = 0;
-  const char *optstr = "Lvl:np:rs";
-  const char *usage = "novramon [-L] [-l <logfile> | -n | -s |"
+  uint16_t u16;
+  const char *optstr = "Lvl:np:rst:";
+  const char *usage = "novramon [-L] [-l <logfile> [-t <seconds>] | -n | -s |"
     " -r [-p <password>] | -v]";
   int conflict_lnrsv = 0;
 
@@ -190,6 +194,12 @@ static void parse_args(int argc, char **argv){
     case 's':
       g.opt_s = 1;
       ++conflict_lnrsv;
+      break;
+    case 't':
+      if(strto_u16(optarg, &u16) != 0){
+	errx(1, "Invalid value of -t option.");
+      }
+      g.opt_t = u16;
       break;
     case 'v':
       g.opt_v = 1;
