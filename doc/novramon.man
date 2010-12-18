@@ -22,7 +22,7 @@ this behavior.
 \fB-l\fR \fIlogfile\fR
 In this mode, \fBnovramon\fR will detach from the terminal
 and become a daemon, and write the information to the specified log file at
-500 milliseconds intervals. The loging interval can be changed with the
+500 milliseconds intervals. The logging interval can be changed with the
 \fB-t\fR option (see below).
 The \fIlogfile\fR should be a full path.
 The columns are (for s75, s75+ and s200):

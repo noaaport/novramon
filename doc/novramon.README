@@ -16,8 +16,8 @@ Usage:
 
   (3) If invoked as ``novramon -l <logfile>'' it will detach from the terminal
       and become a daemon, and write the information to the specified log file
-      at the report interval of the device (twice per second). The loging
-      interval can be adjusted by passng the [-t] option (see below).
+      at the report interval of the device (twice per second). The logging
+      interval can be adjusted by passing the [-t] option (see below).
       The <logfile> argument should be a full path.
 
       The columns are (for s75. s75+ and s200):

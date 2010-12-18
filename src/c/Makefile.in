@@ -7,7 +7,11 @@ INSTALL = @INSTALL@
 CC = cc
 CXX = c++
 EXTRA_CFLAGS = -c -Wall -g
-EXTRA_CXXFLAGS = -c -Wall -g
+#
+# debian and centos require the __STDC_FORMAT_MACROS to define
+# PRIuMAX and related macros (in c++).
+#
+EXTRA_CXXFLAGS = -c -Wall -g  -D__STDC_FORMAT_MACROS
 LDFLAGS = -Llib/v3
 
 NOVRA_SRC_DIR = lib/v3/src
