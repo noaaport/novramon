@@ -35,8 +35,8 @@ static struct {
   int opt_s;	/* print status just once and exit */
   int opt_n;	/* print the data like [-l] but to stdout */
   int opt_r;    /* resets the device and exit */
-  char *opt_l;  /* logfile (logger only) */
   int opt_t;	/* log interval in seconds - uint16 */
+  char *opt_l;  /* logfile (logger only) */
   char *opt_p;  /* password for s75+ to use with [-r] */
 } g = {0, 0, 0, 0, 0, 0, NULL, NULL};
 
