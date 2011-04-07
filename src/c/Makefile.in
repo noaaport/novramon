@@ -3,6 +3,10 @@
 #
 @include@ @q@../../Makefile.inc@q@
 
+NOVRA_SRC_DIR = lib/v3.24/src
+NOVRA_LIB_DIR = ${NOVRA_SRC_DIR}
+NOVRA_TINYXML_DIR = ${NOVRA_SRC_DIR}/tinyxml
+
 INSTALL = @INSTALL@
 CC = cc
 CXX = c++
@@ -11,14 +15,14 @@ EXTRA_CFLAGS = -c -Wall -g
 # debian and centos require the __STDC_FORMAT_MACROS to define
 # PRIuMAX and related macros (in c++).
 #
-EXTRA_CXXFLAGS = -c -Wall -g  -D__STDC_FORMAT_MACROS
-LDFLAGS = -Llib/v3
+EXTRA_CXXFLAGS = -c -Wall -g -D__STDC_FORMAT_MACROS \
+	-iquote ${NOVRA_LIB_DIR} -iquote ${NOVRA_TINYXML_DIR}
+LDFLAGS = -L ${NOVRA_LIB_DIR}
 
-NOVRA_SRC_DIR = lib/v3/src
 NOVRA_LIBS = -lRecCom
 EXTRA_LIBS = -lncurses
 
-HEADERS = lib/v3/RecComLib.h \
+HEADERS = ${NOVRA_LIB_DIR}/RecComLib.h \
 	version.h \
 	err.h logfile.h util.h status.h \
 	s75.h s75p.h s200.h s75_private.h
@@ -33,11 +37,11 @@ POLL_SOURCE = novrapoll.cc
 POLL_OBJECTS = novrapoll.o
 POLL_TARGET = novrapoll
 
-TARGET = ${MON_TARGET} ${POLL_TARGET} 
+TARGET = ${MON_TARGET} ${POLL_TARGET}
 
 all: ${TARGET}
 
-${HEADERS}:
+NOVRA:
 	cd ${NOVRA_SRC_DIR}; ${MAKE}
 
 @CORULE@ ${HEADERS}
@@ -46,11 +50,11 @@ ${HEADERS}:
 @CCORULE@ ${HEADERS}
 	${CXX} ${CXXFLAGS} ${EXTRA_CXXFLAGS} $<
 
-${MON_TARGET}: ${MON_OBJECTS} ${COMMON_OBJECTS}
+${MON_TARGET}: ${MON_OBJECTS} ${COMMON_OBJECTS} NOVRA
 	${CXX} -o ${MON_TARGET} ${MON_OBJECTS} ${COMMON_OBJECTS} \
 	${LDFLAGS} ${NOVRA_LIBS} ${EXTRA_LIBS}
 
-${POLL_TARGET}: ${POLL_OBJECTS} ${COMMON_OBJECTS}
+${POLL_TARGET}: ${POLL_OBJECTS} ${COMMON_OBJECTS} NOVRA
 	${CXX} -o ${POLL_TARGET} ${POLL_OBJECTS} ${COMMON_OBJECTS} \
 	${LDFLAGS} ${NOVRA_LIBS} ${EXTRA_LIBS}
 

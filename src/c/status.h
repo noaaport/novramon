@@ -5,7 +5,7 @@
 #define STATUS_H
 
 #include <time.h>
-#include "lib/v3/RecComLib.h"
+#include "RecComLib.h"
 
 /*
  * From RecComLib, these are the "device_type" that novramon supports:
