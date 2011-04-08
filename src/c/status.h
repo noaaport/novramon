@@ -16,6 +16,7 @@
  * R_S75PLUS
  * R_S75PLUSPRO
  * R_S200
+ * R_SJ300
  */
 
 struct novra_param_st {
@@ -92,5 +93,6 @@ void log_status(const char *fname,
 int isdevice_s75(struct novra_status_st *nvstatus);
 int isdevice_s75p(struct novra_status_st *nvstatus);
 int isdevice_s200(struct novra_status_st *nvstatus);
+int isdevice_s300(struct novra_status_st *nvstatus);
 
 #endif

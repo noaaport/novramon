@@ -25,9 +25,11 @@ EXTRA_LIBS = -lncurses
 HEADERS = ${NOVRA_LIB_DIR}/RecComLib.h \
 	version.h \
 	err.h logfile.h util.h status.h \
-	s75.h s75p.h s200.h s75_private.h
-COMMON_SOURCES = err.c util.c logfile.c status.cc s75.cc s75p.cc s200.cc
-COMMON_OBJECTS = err.o util.o logfile.o status.o s75.o s75p.o s200.o
+	s75.h s75p.h s200.h s300.h s75_private.h
+COMMON_SOURCES = err.c util.c logfile.c status.cc s75.cc s75p.cc \
+	s200.cc s300.cc
+COMMON_OBJECTS = err.o util.o logfile.o status.o s75.o s75p.o \
+	s200.o s300.o
 
 MON_SOURCE = novramon.cc
 MON_TARGET = novramon

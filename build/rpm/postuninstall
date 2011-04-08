@@ -5,3 +5,8 @@
 	cd /usr/lib64
 	rm -rf novramon
 }
+
+# Avoid exiting with non-zero status if the directory does not exist
+# (because rpm will catch the non-zero status as a script error).
+#
+exit 0

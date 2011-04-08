@@ -30,6 +30,7 @@ static void update_status(struct novra_status_st *nvstatus, char *cmd);
 static void update_status_s75(struct novra_status_st *nvstatus, char *cmd);
 static void update_status_s75p(struct novra_status_st *nvstatus, char *cmd);
 static void update_status_s200(struct novra_status_st *nvstatus, char *cmd);
+static void update_status_s300(struct novra_status_st *nvstatus, char *cmd);
 
 int main(int argc, char **argv){
 
@@ -83,6 +84,8 @@ static void update_status(struct novra_status_st *nvstatus, char *cmd){
     update_status_s75p(nvstatus, cmd);
   else if(isdevice_s200(nvstatus))
     update_status_s200(nvstatus, cmd);
+  else if(isdevice_s300(nvstatus))
+    update_status_s300(nvstatus, cmd);
   else
     log_warnx("%s\n", "Unsupported device.");
 }
@@ -328,6 +331,104 @@ static void update_status_s200(struct novra_status_st *nvstatus, char *cmd){
 	  carrier_to_noise_min, carrier_to_noise_max,
 	  signal_strength_min_dbm, signal_strength_max_dbm,
 	  s200->data_sync_loss, s200->frequency_offset,
+	  ethernet_transmit_period, dvb_accepted_period);
+
+  fflush(stdout);
+
+  last = now;
+  uncorrectables_period = 0;
+  ethernet_transmit_period = 0;
+  dvb_accepted_period = 0;
+  vber_min = 1.0;
+  vber_max = 0.0;
+  carrier_to_noise_min = 100.0;
+  carrier_to_noise_max = 0.0;
+  signal_strength_min = 255;
+  signal_strength_max = 0;
+  signal_strength_min_dbm = 100;
+  signal_strength_max_dbm = -100;
+}
+
+static void update_status_s300(struct novra_status_st *nvstatus, char *cmd){
+
+  struct novra_param_st *s300 = &nvstatus->param;
+  time_t now;
+  static time_t last = 0;
+  static unsigned int uncorrectables = 0;
+  static unsigned int uncorrectables_period = 0;
+  static unsigned int ethernet_transmit_period = 0;   /* packets */
+  static unsigned int dvb_accepted_period = 0;        /* packets */
+  static double vber_min = 1.0;
+  static double vber_max = 0.0;
+  static double carrier_to_noise_min = 100.0;
+  static double carrier_to_noise_max = 0.0;
+  static int signal_strength_min = 255;
+  static int signal_strength_max = 0;
+  static int signal_strength_min_dbm = 100;
+  static int signal_strength_max_dbm = -100;
+
+  if(nvstatus->status == 0){
+    if(s300->vber < vber_min)
+      vber_min = s300->vber;
+
+    if(s300->vber > vber_max)
+      vber_max = s300->vber;
+
+    if(s300->signal_strength_as_percentage < signal_strength_min)
+      signal_strength_min = s300->signal_strength_as_percentage;
+
+    if(s300->signal_strength_as_percentage > signal_strength_max)
+      signal_strength_max = s300->signal_strength_as_percentage;
+
+    if(s300->signal_strength_as_dbm < signal_strength_min_dbm)
+      signal_strength_min_dbm = s300->signal_strength_as_dbm;
+
+    if(s300->signal_strength_as_dbm > signal_strength_max_dbm)
+      signal_strength_max_dbm = s300->signal_strength_as_dbm;
+
+    if(s300->carrier_to_noise < carrier_to_noise_min)
+      carrier_to_noise_min = s300->carrier_to_noise;
+
+    if(s300->carrier_to_noise > carrier_to_noise_max)
+      carrier_to_noise_max = s300->carrier_to_noise;
+
+    uncorrectables_period += s300->uncorrectables;
+    uncorrectables += s300->uncorrectables;
+
+    ethernet_transmit_period += s300->ethernet_transmit;
+    dvb_accepted_period += s300->dvb_accepted;
+  }
+
+  if(strcmp(cmd, "POLL\n") == 0)
+    return;
+  else if(strcmp(cmd, "REPORT\n") != 0)
+    log_errx(1, "Unrecognized command");
+
+  /*
+  fprintf(stdout, "%u %hhu %.2e %.2e %hhu %hhu %u %u\n",
+	  (unsigned int)now, nvstatus->signal_strength_percentage,
+	  vber_min, vber_max,
+	  s75p->SignalLock, s75p->DataLock,
+	  uncorrectables_period, uncorrectables);
+  */
+
+  if(nvstatus->status != 0){
+      fprintf(stdout, "ERROR:Cannot get device status.\n");
+      fflush(stdout);
+      return;
+  }
+
+  now = time(NULL);
+
+  fprintf(stdout, "OK:%d,%d,%d,%d,%d,%.2e,%.2e,%u,"
+	  "%.1f,%.1f,%d,%d,%d,%d,%u,%u\n",
+	  (unsigned int)now,
+	  s300->data_lock, s300->signal_lock,
+	  signal_strength_min, signal_strength_max,
+	  vber_min, vber_max, uncorrectables_period,
+	  carrier_to_noise_min, carrier_to_noise_max,
+	  signal_strength_min_dbm, signal_strength_max_dbm,
+	  s300->data_sync_loss, s300->frequency_offset,
 	  ethernet_transmit_period, dvb_accepted_period);
 
   fflush(stdout);

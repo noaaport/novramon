@@ -3,7 +3,7 @@
 .\"
 .\" See LICENSE
 .\"
-.TH NOVRAMON 1 "5 DECEMBER, 2010"
+.TH NOVRAMON 1 "8 APRIL, 2011"
 .SH NAME
 novramon \- Program monitor for the Novra Noaaport receivers 
 .SH SYNOPSIS
@@ -11,8 +11,8 @@ novramon \- Program monitor for the Novra Noaaport receivers
 [-n | -s | -r [-p \fIpasswd\fR] | -l \fIlogfile\fR | -v]
 
 .SH DESCRIPTION
-\fInovramon\fR monitors the status of the novra box (s75, s75+ and s200).
-It can be invoked with various options to control its behavior.
+\fInovramon\fR monitors the status of the novra box (s75, s75+, s200, 300).
+This version has been tested only with the s300.
 
 If invoked without options it continuously updates the terminal screen
 with the status information. The following invocation forms modify

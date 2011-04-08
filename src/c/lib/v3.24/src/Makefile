@@ -3,8 +3,10 @@
 #
 CXX = c++
 
-# CXXFLAGS += -c -Wall -g -DLINUX -DJSAT -I /usr/local/include
-CXXFLAGS += -c -Wall -g -DAPPLE -DJSAT -iquote tinyxml -I /usr/local/include
+#
+# As of 3.24, none of the source files -DAPPLE or -DLINUX
+#
+CXXFLAGS += -c -Wall -g -DJSAT -iquote tinyxml -I /usr/local/include
 CXXFLAGS += -Wno-deprecated
 
 LDFLAGS = -L /usr/local/lib

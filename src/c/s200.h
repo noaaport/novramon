@@ -1,5 +1,5 @@
 /*
- * $Id: s75p.h 1 2009-12-14 01:44:00Z nieves $
+ * $Id$
  */
 #ifndef S200_H
 #define S200_H

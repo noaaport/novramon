@@ -6,6 +6,7 @@
 #include "s75.h"
 #include "s75p.h"
 #include "s200.h"
+#include "s300.h"
 #include "status.h"
 
 static void fill_novra_param(Receiver *r, struct novra_param_st *p);
@@ -322,6 +323,8 @@ void print_status(struct novra_status_st *nvstatus, int f_longdisplay){
     print_status_s75p(nvstatus, f_longdisplay);
   else if(isdevice_s200(nvstatus))
     print_status_s200(nvstatus, f_longdisplay);
+  else if(isdevice_s300(nvstatus))
+    print_status_s300(nvstatus, f_longdisplay);
   else
     warnx("Invalid value of nvstatus->device_type: %d", nvstatus->device_type);
 }
@@ -334,6 +337,8 @@ void print_statusw(struct novra_status_st *nvstatus, int f_longdisplay){
     print_statusw_s75p(nvstatus, f_longdisplay);
   else if(isdevice_s200(nvstatus))
     print_statusw_s200(nvstatus, f_longdisplay);
+  else if(isdevice_s300(nvstatus))
+    print_statusw_s300(nvstatus, f_longdisplay);
   else
     warnx("Invalid value of nvstatus->device_type: %d", nvstatus->device_type);
 }
@@ -347,6 +352,8 @@ void log_status(const char *fname, struct novra_status_st *nvstatus,
     log_status_s75p(fname, nvstatus, f_longdisplay, logperiod);
   else if(isdevice_s200(nvstatus))
     log_status_s200(fname, nvstatus, f_longdisplay, logperiod);
+  else if(isdevice_s300(nvstatus))
+    log_status_s300(fname, nvstatus, f_longdisplay, logperiod);
   else
     log_warnx("Invalid value of nvstatus->device_type: %d",
 	      nvstatus->device_type);
@@ -377,6 +384,16 @@ int isdevice_s200(struct novra_status_st *nvstatus){
   int t = nvstatus->device_type;
 
   if(t == R_S200)
+    return(1);
+
+  return(0);
+}
+
+int isdevice_s300(struct novra_status_st *nvstatus){
+
+  int t = nvstatus->device_type;
+
+  if(t == R_SJ300)
     return(1);
 
   return(0);
