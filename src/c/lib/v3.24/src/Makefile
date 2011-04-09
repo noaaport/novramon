@@ -1,6 +1,11 @@
 #
 # $Id$
 #
+# Must be invoked defining GMAKE in the cmd line (for tinyxml):
+#
+# Freebsd: make GMAKE=gmake
+# Linux:   make GMAKE=make
+#
 CXX = c++
 
 #
@@ -65,14 +70,14 @@ all: ${TARGET}
 	${CXX} ${CXXFLAGS} $<
 
 TINY_XML:
-	cd tinyxml; gmake all
+	cd tinyxml; ${GMAKE} all
 
 ${TARGET}: ${OBJECTS} TINY_XML
 	ar -r -c ${TARGET} ${OBJECTS} ${TINY_OBJECTS}
 	ranlib ${TARGET}
-	# cp ${PUBLIC} ..
+	cp ${PUBLIC} ..
 
 clean : 
 	cd ..; rm -rf ${PUBLIC}
 	rm -f *~ ${OBJECTS} ${TARGET}
-	cd tinyxml; gmake clean
+	cd tinyxml; ${GMAKE} clean

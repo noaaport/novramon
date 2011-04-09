@@ -7,6 +7,7 @@ Standards-Version: 3.7.2
 
 Package: novramon
 Architecture: any
+Depends: ${shlibs:Depends}
 Description: Program and tcl interface to the novra s75 family of receivers.
  Novramon is a program for monitoring the novra s75 family of receivers. The
  package contains also a tcl library interface.

@@ -14,6 +14,8 @@ TCLSH=/usr/local/bin/tclsh8.6
 CORULE=".c.o:"
 CCORULE=".cc.o:"
 
+GMAKE=make
+
 os=`uname`
 [ $os = Linux ] && flavor=unknown
 if [ -f /etc/fedora-release ]
@@ -54,6 +56,7 @@ case $os in
 	TCLSH=/usr/bin/tclsh
 	CORULE="%.o: %.c"
 	CCORULE="%.o: %.cc"
+	GMAKE=make
 	;;
     Darwin)
 	INCLUDE="include"
@@ -77,5 +80,6 @@ configure_default () {
       -e "/@TCLSH@/ s||$TCLSH|" \
       -e "/@CORULE@/ s||$CORULE|g" \
       -e "/@CCORULE@/ s||$CCORULE|g" \
+      -e "/@GMAKE@/ s||$GMAKE|g" \
       $makefile_in > $makefile_out
 }

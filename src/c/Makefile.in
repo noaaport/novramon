@@ -8,6 +8,7 @@ NOVRA_LIB_DIR = ${NOVRA_SRC_DIR}
 NOVRA_TINYXML_DIR = ${NOVRA_SRC_DIR}/tinyxml
 
 INSTALL = @INSTALL@
+GMAKE = @GMAKE@
 CC = cc
 CXX = c++
 EXTRA_CFLAGS = -c -Wall -g
@@ -44,7 +45,7 @@ TARGET = ${MON_TARGET} ${POLL_TARGET}
 all: ${TARGET}
 
 NOVRA:
-	cd ${NOVRA_SRC_DIR}; ${MAKE}
+	cd ${NOVRA_SRC_DIR}; ${MAKE} GMAKE=${GMAKE}
 
 @CORULE@ ${HEADERS}
 	${CC} ${CFLAGS} ${EXTRA_CFLAGS} $<
@@ -65,6 +66,6 @@ install: all
 	${INSTALL} -m 0755 ${POLL_TARGET} ${MYLIBEXECDIR}
 
 clean:
-	cd ${NOVRA_SRC_DIR}; ${MAKE} clean
+	cd ${NOVRA_SRC_DIR}; ${MAKE} GMAKE=${GMAKE} clean
 	rm -f *~ ${TARGET} ${MON_OBJECTS} ${POLL_OBJECTS} ${COMMON_OBJECTS}
 	rm -f Makefile
