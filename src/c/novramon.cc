@@ -97,6 +97,7 @@ int main(int argc, char **argv){
   }
 
   /*  print_receiver(g_r); */
+  /* check_param(g_r); */
 
   if(g.opt_p != NULL){
     specify_password(g_r, g.opt_p);

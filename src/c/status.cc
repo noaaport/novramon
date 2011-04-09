@@ -11,10 +11,7 @@
 
 static void fill_novra_param(Receiver *r, struct novra_param_st *p);
 
-#if 0
-static void check_param(Receiver *r);
-
-static void check_param(Receiver *r){
+void check_param(Receiver *r){
 
   if(r->hasParameter(CARRIER_FREQUENCY)){
       fprintf(stdout, "OK: CARRIER_FREQUENCY\n");
@@ -219,8 +216,9 @@ static void check_param(Receiver *r){
   }else{
       fprintf(stdout, "NO: GFARA\n");
   }
+
+  exit(0);
 }
-#endif
 
 void init_novra_status(struct novra_status_st *nvstatus){
   /*
@@ -308,10 +306,6 @@ int get_status(Receiver *r, struct novra_status_st *nvstatus){
   memset(&nvstatus->param, 0, sizeof(struct novra_param_st));
   fill_novra_param(r, &nvstatus->param);
 
-#if 0
-  check_param(r);
-#endif
-  
   return(0);
 }
 
@@ -429,6 +423,15 @@ static void fill_novra_param(Receiver *r, struct novra_param_st *p){
   if(r->hasParameter(SIGNAL_STRENGTH_AS_DBM)){
     p->signal_strength_as_dbm = 
       r->getParameter(SIGNAL_STRENGTH_AS_DBM).asLong();
+
+    /* See note in check_param.txt */
+    if(r->hasParameter(SIGNAL_STRENGTH_AS_PERCENTAGE) == 0){
+      if(p->signal_strength_as_dbm > -25){
+	p->signal_strength_as_percentage = 100;
+      }else{
+	p->signal_strength_as_percentage = 2*(p->signal_strength_as_dbm + 75);
+      }
+    }
   }
 
   if(r->hasParameter(CARRIER_TO_NOISE)){

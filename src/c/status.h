@@ -78,6 +78,9 @@ struct novra_status_st {
   unsigned int uncorrectables_total;
 };
 
+/* This is used only for diagnostics */
+void check_param(Receiver *r);
+
 void init_novra_status(struct novra_status_st *nvstatus);
 void reinit_novra_status(struct novra_status_st *nvstatus);
 void update_status(struct novra_status_st *nvstatus);

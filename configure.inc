@@ -14,7 +14,7 @@ TCLSH=/usr/local/bin/tclsh8.6
 CORULE=".c.o:"
 CCORULE=".cc.o:"
 
-GMAKE=make
+GMAKE=gmake
 
 os=`uname`
 [ $os = Linux ] && flavor=unknown
