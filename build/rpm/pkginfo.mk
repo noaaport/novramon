@@ -10,7 +10,7 @@ package_build = 1
 rpmroot = /usr/src/redhat
 
 # empty variables will be filled by make
-Summary = Program and tcl interface to the novra s75 family of receivers.
+Summary = Program and tcl interface to the novra S300 receiver.
 Name = ${name}
 Version = ${version}
 Release = ${package_build}
