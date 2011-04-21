@@ -426,16 +426,20 @@ static void fill_novra_param(Receiver *r, struct novra_param_st *p){
 
     /* See note in check_param.txt */
     if(r->hasParameter(SIGNAL_STRENGTH_AS_PERCENTAGE) == 0){
-      if(p->signal_strength_as_dbm > -25){
+      if(p->signal_strength_as_dbm >= -25)
 	p->signal_strength_as_percentage = 100;
-      }else{
+      else if(p->signal_strength_as_dbm <= -75)
+	p->signal_strength_as_percentage = 0;
+      else
 	p->signal_strength_as_percentage = 2*(p->signal_strength_as_dbm + 75);
-      }
     }
-  }
+  }    
 
   if(r->hasParameter(CARRIER_TO_NOISE)){
-    p->carrier_to_noise = r->getParameter(CARRIER_TO_NOISE).asFloat();
+    if(p->signal_strength_as_dbm <= -75)
+      p->carrier_to_noise = 0.0;
+    else
+      p->carrier_to_noise = r->getParameter(CARRIER_TO_NOISE).asFloat();
   }
 
   if(r->hasParameter(VBER)){
