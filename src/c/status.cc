@@ -231,7 +231,7 @@ void init_novra_status(struct novra_status_st *nvstatus){
 
 void reinit_novra_status(struct novra_status_st *nvstatus){
   /*
-   * Initialize the only the the min, max values.
+   * Initialize the only the min, max values.
    */
   nvstatus->signal_strength_as_percentage_min = 255;
   nvstatus->signal_strength_as_percentage_max = 0;
