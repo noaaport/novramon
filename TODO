@@ -1,0 +1,2 @@
+Wed Apr 27 19:20:23 AST 2011
+ - Confirm the value of C/N when there is no signal (status.cc look for XXX)

@@ -9,6 +9,12 @@
 #include "s300.h"
 #include "status.h"
 
+/*
+ * XXX - Sould be set to whatever the C/N is reported when there is no signal;
+ * 6543.6 or 6553.6 or whatever.
+ */
+#define XXX_BAD_CNRATIO_VALUE 255.0
+
 static void fill_novra_param(Receiver *r, struct novra_param_st *p);
 
 void check_param(Receiver *r){
@@ -440,6 +446,13 @@ static void fill_novra_param(Receiver *r, struct novra_param_st *p){
       p->carrier_to_noise = 0.0;
     else
       p->carrier_to_noise = r->getParameter(CARRIER_TO_NOISE).asFloat();
+
+    /*
+     * XXX - Sould be set to whatever the C/N is reported when there is no signal;
+     * 6543.6 or 6553.6 or whatever.
+     */
+    if(p->carrier_to_noise > 255.0)
+      p->carrier_to_noise = XXX_BAD_CNRATIO_VALUE;
   }
 
   if(r->hasParameter(VBER)){
