@@ -448,11 +448,13 @@ static void fill_novra_param(Receiver *r, struct novra_param_st *p){
       p->carrier_to_noise = r->getParameter(CARRIER_TO_NOISE).asFloat();
 
     /*
-     * XXX - Sould be set to whatever the C/N is reported when there is no signal;
-     * 6543.6 or 6553.6 or whatever.
+     * XXX - Sould be set to whatever the C/N is reported when
+     * there is no signal; 6543.6 or 6553.6 or whatever.
      */
-    if(p->carrier_to_noise > 255.0)
-      p->carrier_to_noise = XXX_BAD_CNRATIO_VALUE;
+    if((p->signal_lock != 1) || (p->data_lock != 1) ||
+       (p->carrier_to_noise > XXX_BAD_CNRATIO_VALUE))
+
+      p->carrier_to_noise = 0.0;
   }
 
   if(r->hasParameter(VBER)){

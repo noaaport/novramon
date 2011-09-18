@@ -24,9 +24,15 @@ upload_get_osparams () {
 		osrelease=`echo $release | cut -d ' ' -f 3`
 	    elif [ -f /etc/redhat-release ]
 	    then
-		osname=centos
 		release=`cat /etc/redhat-release`
-		osrelease=`echo $release | cut -d ' ' -f 3`
+		osrelease=`echo $release | cut -d ' ' -f 4`
+		osname=`echo $release | cut -d ' ' -f 1`
+		if [ $osname = "CentOS" ]
+		then
+		    osname="centos"
+		else	
+		    osname="scientific-linux"
+		fi
 	    elif [ -f /etc/debian_version ]
 	    then
 		osname=debian
@@ -61,7 +67,7 @@ upload_get_pkgparams () {
 		pkglocaldir="../bsd"
 		cd $savedir
 		;;
-	    fedoracore|opensuse|centos)
+	    fedoracore|opensuse|centos|scientific-linux)
 	        cd ../rpm
 		pkgfilename=`ls ${name}-${version}*.rpm`
 		pkglocaldir="../rpm"
