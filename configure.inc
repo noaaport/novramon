@@ -9,7 +9,9 @@ PREFIX=usr/local
 MANDIR=man
 
 INSTALL=install
+
 TCLSH=/usr/local/bin/tclsh8.6
+TCLLIBDIR=LIBDIR
 
 CORULE=".c.o:"
 CCORULE=".cc.o:"
@@ -57,6 +59,11 @@ case $os in
 	CORULE="%.o: %.c"
 	CCORULE="%.o: %.cc"
 	GMAKE=make
+
+	if [ $flavor = centos ]
+	then
+		TCLLIBDIR=SHAREDIR
+	fi
 	;;
     Darwin)
 	INCLUDE="include"
@@ -78,6 +85,7 @@ configure_default () {
       -e "/@MANDIR@/ s||$MANDIR|g" \
       -e "/@INSTALL@/ s||$INSTALL|" \
       -e "/@TCLSH@/ s||$TCLSH|" \
+      -e "/@TCLLIBDIR@/ s||$TCLLIBDIR|" \
       -e "/@CORULE@/ s||$CORULE|g" \
       -e "/@CCORULE@/ s||$CCORULE|g" \
       -e "/@GMAKE@/ s||$GMAKE|g" \

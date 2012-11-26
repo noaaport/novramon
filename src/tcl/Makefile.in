@@ -9,7 +9,7 @@ TCLSH = @TCLSH@
 LIBSOURCE = novramon.tcl.in
 LIBTARGET = novramon.tcl
 INDEXFILE = pkgIndex.tcl
-LIBFILES = novramon.tcl ${INDEXFILE}
+LIBFILES = ${LIBTARGET} ${INDEXFILE}
 EXAMPLES = example.tcl
 
 TARGET = ${EXAMPLES} ${LIBTARGET}
@@ -23,7 +23,7 @@ ${LIBTARGET}: ${LIBSOURCE}
 	sed -e /%MYLIBEXECDIR%/s##${MYLIBEXECDIR}# ${LIBSOURCE} > ${LIBTARGET}
 
 install: all
-	${INSTALL} -m 0644 ${LIBFILES} ${MYLIBDIR}
+	${INSTALL} -m 0644 ${LIBFILES} ${MYTCLLIBDIR}
 	${INSTALL} -m 0644 ${EXAMPLES} ${MYDOCDIR}
 
 clean:

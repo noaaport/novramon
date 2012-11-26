@@ -14,15 +14,20 @@ PREFIX = @PREFIX@
 DESTDIR = ${PKGBUILDDIR}/${PREFIX}
 BINDIR = ${DESTDIR}/bin
 LIBDIR = ${DESTDIR}/lib
+SHAREDIR = ${DESTDIR}/share
 LIBEXECDIR = ${DESTDIR}/libexec
 DOCDIR = ${DESTDIR}/share/doc
 MANDIR = ${DESTDIR}/@MANDIR@
 
 MANEXT = 1
 MYMANDIR = ${MANDIR}/man${MANEXT}
+
+# Where we will put the tcl novramon lib (must be in auto_path)
+TCLLIBDIR = @TCLLIBDIR@
+
 #
 # These directories must be created
 #
-MYLIBDIR = ${LIBDIR}/${PKGNAME}
+MYTCLLIBDIR = ${@TCLLIBDIR@}/${PKGNAME}
 MYLIBEXECDIR = ${LIBEXECDIR}/${PKGNAME}
 MYDOCDIR = ${DOCDIR}/${PKGNAME}
