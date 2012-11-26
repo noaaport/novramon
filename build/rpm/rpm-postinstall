@@ -1,11 +1,3 @@
-#
-# In CentOS, auto_path has /usr/lib in x86 and /usr/lib64 for x64_64
-#
-[ -d /usr/lib64 ] && {
-	mkdir -p /usr/lib64/novramon
-	cp /usr/lib/novramon/* /usr/lib64/novramon
-}
-
 cat <<__EOF__
 -
 The directory

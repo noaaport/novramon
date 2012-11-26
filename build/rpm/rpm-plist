@@ -1,6 +1,6 @@
 /usr/bin/novramon
-/usr/lib/novramon/novramon.tcl
-/usr/lib/novramon/pkgIndex.tcl
+/usr/share/novramon/novramon.tcl
+/usr/share/novramon/pkgIndex.tcl
 /usr/libexec/novramon/novrapoll
 /usr/share/doc/novramon/example.tcl
 /usr/share/doc/novramon/novramon.README

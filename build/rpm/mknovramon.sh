@@ -1,6 +1,6 @@
 #!/bin/sh
 
-branchname=npstats
+branchname=novramon
 
 cd ${branchname}/build/rpm
 make clean
