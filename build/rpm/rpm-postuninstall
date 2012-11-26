@@ -1,5 +1,5 @@
 #
-# In CentOS, auto_path does not have /usr/share (nor /usr/lib)
+# Undo what rpm-postistall does with the tcl library
 #
 [ -f /usr/share/tcl8.5/novramon ] && rm /usr/share/tcl8.5/novramon
 

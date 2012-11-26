@@ -2,9 +2,13 @@
 #
 #   /usr/share/tcl8.5 /usr/lib64/tcl8.5 /usr/lib64/tk8.5 /usr/share/tk8.5
 #
-#
-cd /usr/share/tcl8.5
-ln -s ../novramon .
+# but the novramon tcl lib is installed in /usr/share.
+
+if [ -d /usr/share/tcl8.5 ]
+then
+  cd /usr/share/tcl8.5
+  ln -s ../novramon .
+fi
 
 cat <<__EOF__
 -
