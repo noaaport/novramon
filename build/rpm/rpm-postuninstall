@@ -1,7 +1,7 @@
 #
 # Undo what rpm-postistall does with the tcl library
 #
-[ -f /usr/share/tcl8.5/novramon ] && rm /usr/share/tcl8.5/novramon
+[ -L /usr/share/tcl8.5/novramon ] && rm /usr/share/tcl8.5/novramon
 
 # Avoid exiting with non-zero status if the directory (link) does not exist
 # (because rpm will catch the non-zero status as a script error).
