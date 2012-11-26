@@ -1,18 +1,7 @@
 #!/bin/sh
 
-branchname=novramon
+branchname=npstats
 
-rpmroot=$HOME/rpmbuild
-
-tgzfile=${branchname}.tgz
-rm -rf $branchname
-tar -xzf $tgzfile
-
-. ./$branchname/VERSION
-
-rm -rf ${name}-${version}
-cp -r $branchname ${name}-${version}
-tar -czf ${name}-${version}.tgz ${name}-${version}
-cp ${name}-${version}.tgz $rpmroot/SOURCES
-cd ${name}-${version}/build/rpm
+cd ${branchname}/build/rpm
+make clean
 make package
