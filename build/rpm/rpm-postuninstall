@@ -1,12 +1,9 @@
 #
-# In CentOS, auto_path has /usr/lib in x86 and /usr/lib64 for x64_64
+# In CentOS, auto_path does not have /usr/share (nor /usr/lib)
 #
-[ -d /usr/lib64/novramon ] && {
-	cd /usr/lib64
-	rm -rf novramon
-}
+[ -f /usr/share/tcl8.5/novramon ] && rm /usr/share/tcl8.5/novramon
 
-# Avoid exiting with non-zero status if the directory does not exist
+# Avoid exiting with non-zero status if the directory (link) does not exist
 # (because rpm will catch the non-zero status as a script error).
 #
 exit 0
