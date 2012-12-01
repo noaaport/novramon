@@ -11,7 +11,7 @@ MANDIR=man
 INSTALL=install
 
 TCLSH=/usr/local/bin/tclsh8.6
-TCLLIBDIR=LIBDIR
+TCLLIBDIR=lib
 
 CORULE=".c.o:"
 CCORULE=".cc.o:"
@@ -62,7 +62,7 @@ case $os in
 
 	if [ $flavor = centos ]
 	then
-		TCLLIBDIR=SHAREDIR
+		TCLLIBDIR=share
 	fi
 	;;
     Darwin)

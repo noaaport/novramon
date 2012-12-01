@@ -23,11 +23,11 @@ MANEXT = 1
 MYMANDIR = ${MANDIR}/man${MANEXT}
 
 # Where we will put the tcl novramon lib (must be in auto_path)
-TCLLIBDIR = @TCLLIBDIR@
+TCLLIBDIR = ${DESTDIR}/@TCLLIBDIR@
 
 #
 # These directories must be created
 #
-MYTCLLIBDIR = ${@TCLLIBDIR@}/${PKGNAME}
+MYTCLLIBDIR = ${TCLLIBDIR}/${PKGNAME}
 MYLIBEXECDIR = ${LIBEXECDIR}/${PKGNAME}
 MYDOCDIR = ${DOCDIR}/${PKGNAME}
