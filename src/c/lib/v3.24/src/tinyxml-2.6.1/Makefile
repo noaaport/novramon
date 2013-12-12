@@ -19,8 +19,8 @@ TINYXML_USE_STL := NO
 
 #****************************************************************************
 
-CC     := gcc
-CXX    := g++
+CC     := cc
+CXX    := c++
 LD     := g++
 AR     := ar rc
 RANLIB := ranlib

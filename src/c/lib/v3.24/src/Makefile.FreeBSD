@@ -9,7 +9,7 @@
 
 ############################# COMPILE MACROS #############################
 
-CCC=g++
+CCC=c++
 #CCC=gcc
 CCFLAGS=
 #CPPFLAGS=-c -g -Wall -I/usr/local/include -DLINUX -DJSAT

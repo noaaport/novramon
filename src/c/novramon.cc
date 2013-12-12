@@ -208,13 +208,13 @@ static void parse_args(int argc, char **argv){
       break;
     default:
       status = 1;
-      errx(1, usage);
+      errx(1, "%s", usage);
       break;
     }
   }
 
   if(conflict_lnrsv > 1)
-    errx(1, usage);
+    errx(1, "%s", usage);
 }
 
 static void cleanup(void){
