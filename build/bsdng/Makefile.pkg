@@ -28,6 +28,10 @@ install: build
 	cd ../..; ${MAKE} PKGBUILDDIR=`pwd`/${pkgng_builddir}/${pkg_root} \
 	PKGCONFDIR=/dist PKGSHAREDIR=/dist install
 
+pkg/pkg-postinstall: pkg-postinstall.in
+	awk '{printf("    %s\n", $$0);}' pkg-postinstall.in > \
+	pkg/pkg-postinstall
+
 pkg/+MANIFEST: manifest.in
 	sed -e "/@name@/s//${name}/" \
 	-e "/@version@/s//${version}/" \
