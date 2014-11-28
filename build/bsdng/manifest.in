@@ -8,14 +8,4 @@ maintainer: nieves@1-loop.net
 licenses: ISC
 comment: Program and tcl interface to the novra S300 receiver.
 prefix: /usr/local
-
-deps:
 @deps@
-
-desc: |
-@desc@
-
-scripts:
-
-  post-install: |
-  @postinstall@
