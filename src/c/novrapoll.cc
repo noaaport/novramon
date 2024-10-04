@@ -94,7 +94,7 @@ static void update_status_s75(struct novra_status_st *nvstatus, char *cmd){
 
   struct novra_param_st *s75 = &nvstatus->param;
   time_t now;
-  static time_t last = 0;
+  /* static time_t last = 0; */
   static unsigned int uncorrectables = 0;
   static unsigned int uncorrectables_period = 0;
   static double vber_min = 1.0;
@@ -156,7 +156,7 @@ static void update_status_s75(struct novra_status_st *nvstatus, char *cmd){
 
   fflush(stdout);
 
-  last = now;
+  /* last = now; */
   uncorrectables_period = 0;
   vber_min = 1.0;
   vber_max = 0.0;
@@ -168,7 +168,7 @@ static void update_status_s75p(struct novra_status_st *nvstatus, char *cmd){
 
   struct novra_param_st *s75p = &nvstatus->param;
   time_t now;
-  static time_t last = 0;
+  /* static time_t last = 0; */
   static unsigned int uncorrectables = 0;
   static unsigned int uncorrectables_period = 0;
   static double vber_min = 1.0;
@@ -239,7 +239,7 @@ static void update_status_s75p(struct novra_status_st *nvstatus, char *cmd){
 
   fflush(stdout);
 
-  last = now;
+  /* last = now; */
   uncorrectables_period = 0;
   vber_min = 1.0;
   vber_max = 0.0;
@@ -255,7 +255,7 @@ static void update_status_s200(struct novra_status_st *nvstatus, char *cmd){
 
   struct novra_param_st *s200 = &nvstatus->param;
   time_t now;
-  static time_t last = 0;
+  /* static time_t last = 0; */
   static unsigned int uncorrectables = 0;
   static unsigned int uncorrectables_period = 0;
   static unsigned int ethernet_transmit_period = 0;   /* packets */
@@ -335,7 +335,7 @@ static void update_status_s200(struct novra_status_st *nvstatus, char *cmd){
 
   fflush(stdout);
 
-  last = now;
+  /* last = now; */
   uncorrectables_period = 0;
   ethernet_transmit_period = 0;
   dvb_accepted_period = 0;
@@ -353,7 +353,7 @@ static void update_status_s300(struct novra_status_st *nvstatus, char *cmd){
 
   struct novra_param_st *s300 = &nvstatus->param;
   time_t now;
-  static time_t last = 0;
+  /* static time_t last = 0; */
   static unsigned int uncorrectables = 0;
   static unsigned int uncorrectables_period = 0;
   static unsigned int ethernet_transmit_period = 0;   /* packets */
@@ -433,7 +433,7 @@ static void update_status_s300(struct novra_status_st *nvstatus, char *cmd){
 
   fflush(stdout);
 
-  last = now;
+  /* last = now; */
   uncorrectables_period = 0;
   ethernet_transmit_period = 0;
   dvb_accepted_period = 0;
