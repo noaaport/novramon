@@ -115,7 +115,7 @@ NOVRA_ERRORS ReceiverSearch::GetAvailablePort( WORD &port)
 		address.sin_family = AF_INET;
 		address.sin_addr.s_addr = INADDR_ANY;
 		address.sin_port = htons( (unsigned short)auto_detect_status_ports[i]);
-		if ( ::bind ( s, (struct sockaddr *)(&address), sizeof( struct sockaddr ) ) == 0 ) {
+		if ( bind ( s, (struct sockaddr *)(&address), sizeof( struct sockaddr ) ) == 0 ) {
 			port = auto_detect_status_ports[i];
 #ifdef WINDOWS
 			closesocket( s );
@@ -390,7 +390,7 @@ bool ReceiverSearch::discoverLocal( ReceiverList *receiverList )
 
 
 		if ( s[port_index] != 0 ) {
-		  if ( ::bind ( s[port_index], (struct sockaddr *)(&address), sizeof( struct sockaddr ) ) != 0 ) {
+			if ( bind ( s[port_index], (struct sockaddr *)(&address), sizeof( struct sockaddr ) ) != 0 ) {
 #ifdef WINDOWS
 				closesocket( s[port_index] );
 #else
@@ -532,7 +532,7 @@ int CStatusListner::StartListening(WORD Port)
 
 	setsockopt( s, SOL_SOCKET, SO_REUSEADDR, (const char *)(&use_again), sizeof( use_again ) );
 
-    if ( ::bind ( s, (struct sockaddr *)(&address), sizeof( struct sockaddr ) ) != 0 ) {
+    if ( bind ( s, (struct sockaddr *)(&address), sizeof( struct sockaddr ) ) != 0 ) {
 #ifdef WINDOWS
 		closesocket( s );
 #else

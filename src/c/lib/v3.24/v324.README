@@ -1,0 +1,44 @@
+04oct2024 -
+
+1) Compiling in Freebsd-14.1 was giving an error in the statements
+using the bind() function, similar to the one described stackoverflow,
+
+https://stackoverflow.com/questions/65102143/socket-bind-error-invalid-operands-to-binary-expression
+
+One response was:
+
+Your code is trying to call the C++ std::bind() function, not the socket
+bind() function. This is likely due to a using namespace std; statement
+in your code.
+
+To ensure the correct function is being called, you can either get rid of the
+using statement, or else qualify the call as using the function from the
+global namespace:
+
+if (::bind(sockfd, (sockaddr *) &addr, sizeof(addr)) ==
+
+I made the change in
+
+Receiver.cpp
+ReceiverSearch.cpp
+
+and renamed the original files as
+
+Receiver.cpp-orig
+ReceiverSearch.cpp-orig
+
+2) The file "DataTypes.h" had
+
+#ifndef _DATATYPE
+#define DATATYPE
+
+which is obvously a typo. So I corrected
+
+#define _DATATYPE
+
+The original file was renamed "DataTypes.h-orig"
+
+
+
+
+

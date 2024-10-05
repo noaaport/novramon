@@ -1,6 +1,6 @@
 #ifndef _DATATYPE
 
-#define _DATATYPE
+#define DATATYPE
 
 
 enum DataType {
@@ -17,3 +17,4 @@ enum DataType {
 
 
 #endif
+

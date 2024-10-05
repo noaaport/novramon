@@ -1195,7 +1195,7 @@ bool Receiver::_connect(	const int timeout,
 		setsockopt( status_socket, SOL_SOCKET, SO_REUSEADDR, (const char *)(&use_again), sizeof( use_again ) );
 
 
-		if ( ::bind ( status_socket, (struct sockaddr *)(&address), sizeof( struct sockaddr ) ) != 0 ) throw 2;
+	    if ( bind ( status_socket, (struct sockaddr *)(&address), sizeof( struct sockaddr ) ) != 0 ) throw 2;
 
 // OCT 2, 2009		
 //		if ( !getStatus() ) throw 3;
