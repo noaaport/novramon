@@ -84,12 +84,16 @@ void log_status_s75p(const char *fname, struct novra_status_st *nvstatus,
   FILE *f;
   time_t now;
 
-  /* Update the derived (min, max) parameters */
-  update_status_minmax(nvstatus);
-
   now = time(NULL);
-  if((logperiod != 0) && (now < nvstatus->last + logperiod))
-    return;
+
+  /*
+   * This is called from the parent log_status()
+   *
+   * update_status_minmax(nvstatus);
+   *
+   * if((logperiod != 0) && (now < nvstatus->last + logperiod))
+   *   return;
+   */
 
   nvstatus->last = now;
 

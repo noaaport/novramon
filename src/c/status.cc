@@ -346,6 +346,18 @@ void print_statusw(struct novra_status_st *nvstatus, int f_longdisplay){
 void log_status(const char *fname, struct novra_status_st *nvstatus,
 		int f_longdisplay, int logperiod){
 
+  time_t now;
+
+  /*
+   * Update the derived (min, max) parameters
+   * (This could have been called in main() right after get_status.
+   */
+  update_status_minmax(nvstatus);
+
+  now = time(NULL);
+  if((logperiod != 0) && (now < nvstatus->last + logperiod))
+    return;
+
   if(isdevice_s75(nvstatus))
     log_status_s75(fname, nvstatus, f_longdisplay, logperiod);
   else if(isdevice_s75p(nvstatus))

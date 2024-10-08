@@ -26,11 +26,11 @@ static Receiver *g_r = NULL;
 static void parse_args(int argc, char **argv);
 static void cleanup(void);
 
-static void update_status_device(struct novra_status_st *nvstatus, char *cmd);
-static void update_status_s75(struct novra_status_st *nvstatus, char *cmd);
-static void update_status_s75p(struct novra_status_st *nvstatus, char *cmd);
-static void update_status_s200(struct novra_status_st *nvstatus, char *cmd);
-static void update_status_s300(struct novra_status_st *nvstatus, char *cmd);
+static void process_cmd(struct novra_status_st *nvstatus, char *cmd);
+static void process_cmd_s75(struct novra_status_st *nvstatus, char *cmd);
+static void process_cmd_s75p(struct novra_status_st *nvstatus, char *cmd);
+static void process_cmd_s200(struct novra_status_st *nvstatus, char *cmd);
+static void process_cmd_s300(struct novra_status_st *nvstatus, char *cmd);
 
 int main(int argc, char **argv){
 
@@ -67,8 +67,8 @@ int main(int argc, char **argv){
 
   while((fgets(inputbuffer, inputbuffer_len, stdin) != NULL) && (status == 0)){
     /*
-     * This function (in status.cc) gets the status from the device and
-     * fills the structure we use to keep the data.
+     * This function (in status.cc) gets the status from the device.
+     * We call it for either POLL or REPORT cmd.
      */
     status = get_status(g_r, &nvstatus);
     if(status != 0)
@@ -76,34 +76,39 @@ int main(int argc, char **argv){
 
     /*
      * Update the data parameters we keep (e.g., min,max) and handle the
-     * POLL or REPORT cmd.
+     * REPORT cmd.
      */
-    update_status(&nvstatus, inputbuffer);
+    process_cmd(&nvstatus, inputbuffer);
   }
 
   return(status);
 }
 
-static void update_status(struct novra_status_st *nvstatus, char *cmd){
+static void process_cmd(struct novra_status_st *nvstatus, char *cmd){
 
   if(isdevice_s75(nvstatus))
-    update_status_s75(nvstatus, cmd);
+    process_cmd_s75(nvstatus, cmd);
   else if(isdevice_s75p(nvstatus))
-    update_status_s75p(nvstatus, cmd);
+    process_cmd_s75p(nvstatus, cmd);
   else if(isdevice_s200(nvstatus))
-    update_status_s200(nvstatus, cmd);
+    process_cmd_s200(nvstatus, cmd);
   else if(isdevice_s300(nvstatus))
-    update_status_s300(nvstatus, cmd);
+    process_cmd_s300(nvstatus, cmd);
   else
     log_warnx("%s\n", "Unsupported device.");
 }
 
-static void update_status_s75(struct novra_status_st *nvstatus, char *cmd){
 
+static void process_cmd_s75(struct novra_status_st *nvstatus, char *cmd){
+  /*
+   * Currently the total number of uncorrectable errors
+   * is not reported (only those during the period. Thus
+   * to avoid compiler warnings we comment the vaiable out.
+   */
   struct novra_param_st *s75 = &nvstatus->param;
   time_t now;
   /* static time_t last = 0; */
-  static unsigned int uncorrectables = 0;
+  /* static unsigned int uncorrectables = 0; */ 
   static unsigned int uncorrectables_period = 0;
   static double vber_min = 1.0;
   static double vber_max = 0.0;
@@ -133,13 +138,19 @@ static void update_status_s75(struct novra_status_st *nvstatus, char *cmd){
       signal_strength_max = s75->signal_strength_as_percentage;
 
     uncorrectables_period += s75->uncorrectables;
-    uncorrectables += s75->uncorrectables;
+    /* uncorrectables += s75->uncorrectables; */
   }
 
   if(strcmp(cmd, "POLL\n") == 0)
     return;
   else if(strcmp(cmd, "REPORT\n") != 0)
     log_errx(1, "Unrecognized command");
+
+  if(nvstatus->status != 0){
+      fprintf(stdout, "ERROR:Cannot get device status.\n");
+      fflush(stdout);
+      return;
+  }
 
   /*
   fprintf(stdout, "%u %hhu %.2e %.2e %hhu %hhu %u %u\n",
@@ -148,13 +159,7 @@ static void update_status_s75(struct novra_status_st *nvstatus, char *cmd){
 	  s75->SignalLock, s75->DataLock,
 	  uncorrectables_period, uncorrectables);
   */
-
-  if(nvstatus->status != 0){
-      fprintf(stdout, "ERROR:Cannot get device status.\n");
-      fflush(stdout);
-      return;
-  }
-
+  
   now = time(NULL);
   fprintf(stdout, "OK:%u,%d,%d,%d,%d,%.2e,%.2e,%u\n",
 	  (unsigned int)now,
@@ -172,12 +177,14 @@ static void update_status_s75(struct novra_status_st *nvstatus, char *cmd){
   signal_strength_max = 0;
 }
 
-static void update_status_s75p(struct novra_status_st *nvstatus, char *cmd){
-
+static void process_cmd_s75p(struct novra_status_st *nvstatus, char *cmd){
+  /*
+   * See comment about uncorrectables in cmd_s75
+   */
   struct novra_param_st *s75p = &nvstatus->param;
   time_t now;
   /* static time_t last = 0; */
-  static unsigned int uncorrectables = 0;
+  /* static unsigned int uncorrectables = 0; */
   static unsigned int uncorrectables_period = 0;
   static double vber_min = 1.0;
   static double vber_max = 0.0;
@@ -215,13 +222,19 @@ static void update_status_s75p(struct novra_status_st *nvstatus, char *cmd){
     */
 
     uncorrectables_period += s75p->uncorrectables;
-    uncorrectables += s75p->uncorrectables;
+    /* uncorrectables += s75p->uncorrectables; */
   }
 
   if(strcmp(cmd, "POLL\n") == 0)
     return;
   else if(strcmp(cmd, "REPORT\n") != 0)
     log_errx(1, "Unrecognized command");
+
+  if(nvstatus->status != 0){
+      fprintf(stdout, "ERROR:Cannot get device status.\n");
+      fflush(stdout);
+      return;
+  }
 
   /*
   fprintf(stdout, "%u %hhu %.2e %.2e %hhu %hhu %u %u\n",
@@ -231,14 +244,7 @@ static void update_status_s75p(struct novra_status_st *nvstatus, char *cmd){
 	  uncorrectables_period, uncorrectables);
   */
 
-  if(nvstatus->status != 0){
-      fprintf(stdout, "ERROR:Cannot get device status.\n");
-      fflush(stdout);
-      return;
-  }
-
   now = time(NULL);
-
   fprintf(stdout, "OK:%d,%d,%d,%d,%d,%.2e,%.2e,%u\n",
 	  (unsigned int)now,
 	  s75p->data_lock, s75p->signal_lock,
@@ -259,12 +265,14 @@ static void update_status_s75p(struct novra_status_st *nvstatus, char *cmd){
   */
 }
 
-static void update_status_s200(struct novra_status_st *nvstatus, char *cmd){
-
+static void process_cmd_s200(struct novra_status_st *nvstatus, char *cmd){
+  /*
+   * See comment about uncorrectables in cmd_s75
+   */
   struct novra_param_st *s200 = &nvstatus->param;
   time_t now;
   /* static time_t last = 0; */
-  static unsigned int uncorrectables = 0;
+  /* static unsigned int uncorrectables = 0; */
   static unsigned int uncorrectables_period = 0;
   static unsigned int ethernet_transmit_period = 0;   /* packets */
   static unsigned int dvb_accepted_period = 0;        /* packets */
@@ -303,7 +311,7 @@ static void update_status_s200(struct novra_status_st *nvstatus, char *cmd){
       carrier_to_noise_max = s200->carrier_to_noise;
 
     uncorrectables_period += s200->uncorrectables;
-    uncorrectables += s200->uncorrectables;
+    /* uncorrectables += s200->uncorrectables; */
 
     ethernet_transmit_period += s200->ethernet_transmit;
     dvb_accepted_period += s200->dvb_accepted;
@@ -314,6 +322,12 @@ static void update_status_s200(struct novra_status_st *nvstatus, char *cmd){
   else if(strcmp(cmd, "REPORT\n") != 0)
     log_errx(1, "Unrecognized command");
 
+  if(nvstatus->status != 0){
+      fprintf(stdout, "ERROR:Cannot get device status.\n");
+      fflush(stdout);
+      return;
+  }
+
   /*
   fprintf(stdout, "%u %hhu %.2e %.2e %hhu %hhu %u %u\n",
 	  (unsigned int)now, nvstatus->signal_strength_percentage,
@@ -322,14 +336,7 @@ static void update_status_s200(struct novra_status_st *nvstatus, char *cmd){
 	  uncorrectables_period, uncorrectables);
   */
 
-  if(nvstatus->status != 0){
-      fprintf(stdout, "ERROR:Cannot get device status.\n");
-      fflush(stdout);
-      return;
-  }
-
   now = time(NULL);
-
   fprintf(stdout, "OK:%d,%d,%d,%d,%d,%.2e,%.2e,%u,"
 	  "%.1f,%.1f,%d,%d,%d,%d,%u,%u\n",
 	  (unsigned int)now,
@@ -357,12 +364,14 @@ static void update_status_s200(struct novra_status_st *nvstatus, char *cmd){
   signal_strength_max_dbm = -100;
 }
 
-static void update_status_s300(struct novra_status_st *nvstatus, char *cmd){
-
+static void process_cmd_s300(struct novra_status_st *nvstatus, char *cmd){
+  /*
+   * See comment about uncorrectables in cmd_s75
+   */
   struct novra_param_st *s300 = &nvstatus->param;
   time_t now;
   /* static time_t last = 0; */
-  static unsigned int uncorrectables = 0;
+  /* static unsigned int uncorrectables = 0; */
   static unsigned int uncorrectables_period = 0;
   static unsigned int ethernet_transmit_period = 0;   /* packets */
   static unsigned int dvb_accepted_period = 0;        /* packets */
@@ -401,7 +410,7 @@ static void update_status_s300(struct novra_status_st *nvstatus, char *cmd){
       carrier_to_noise_max = s300->carrier_to_noise;
 
     uncorrectables_period += s300->uncorrectables;
-    uncorrectables += s300->uncorrectables;
+    /* uncorrectables += s300->uncorrectables; */
 
     ethernet_transmit_period += s300->ethernet_transmit;
     dvb_accepted_period += s300->dvb_accepted;
@@ -412,6 +421,12 @@ static void update_status_s300(struct novra_status_st *nvstatus, char *cmd){
   else if(strcmp(cmd, "REPORT\n") != 0)
     log_errx(1, "Unrecognized command");
 
+  if(nvstatus->status != 0){
+      fprintf(stdout, "ERROR:Cannot get device status.\n");
+      fflush(stdout);
+      return;
+  }
+
   /*
   fprintf(stdout, "%u %hhu %.2e %.2e %hhu %hhu %u %u\n",
 	  (unsigned int)now, nvstatus->signal_strength_percentage,
@@ -420,14 +435,7 @@ static void update_status_s300(struct novra_status_st *nvstatus, char *cmd){
 	  uncorrectables_period, uncorrectables);
   */
 
-  if(nvstatus->status != 0){
-      fprintf(stdout, "ERROR:Cannot get device status.\n");
-      fflush(stdout);
-      return;
-  }
-
   now = time(NULL);
-
   fprintf(stdout, "OK:%d,%d,%d,%d,%d,%.2e,%.2e,%u,"
 	  "%.1f,%.1f,%d,%d,%d,%d,%u,%u\n",
 	  (unsigned int)now,
