@@ -26,7 +26,7 @@ static Receiver *g_r = NULL;
 static void parse_args(int argc, char **argv);
 static void cleanup(void);
 
-static void update_status(struct novra_status_st *nvstatus, char *cmd);
+static void update_status_device(struct novra_status_st *nvstatus, char *cmd);
 static void update_status_s75(struct novra_status_st *nvstatus, char *cmd);
 static void update_status_s75p(struct novra_status_st *nvstatus, char *cmd);
 static void update_status_s200(struct novra_status_st *nvstatus, char *cmd);
@@ -37,7 +37,7 @@ int main(int argc, char **argv){
   int status = 0;
   NOVRA_ERRORS novra_error;
   struct novra_status_st nvstatus;
-  char inputbuffer[32];
+  char inputbuffer[32]; /* the cmd "POLL" or "REPORT" */
   int inputbuffer_len = 32;
 
   set_progname(NOVRAPOLL_IDENT);	/* init err lib */
@@ -66,10 +66,18 @@ int main(int argc, char **argv){
   fflush(stdout);
 
   while((fgets(inputbuffer, inputbuffer_len, stdin) != NULL) && (status == 0)){
+    /*
+     * This function (in status.cc) gets the status from the device and
+     * fills the structure we use to keep the data.
+     */
     status = get_status(g_r, &nvstatus);
     if(status != 0)
       log_errx_getstatus(status);
 
+    /*
+     * Update the data parameters we keep (e.g., min,max) and handle the
+     * POLL or REPORT cmd.
+     */
     update_status(&nvstatus, inputbuffer);
   }
 

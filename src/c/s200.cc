@@ -113,7 +113,7 @@ void log_status_s200(const char *fname, struct novra_status_st *nvstatus,
   time_t now;
 
   /* Update the derived (min, max) parameters */
-  update_status(nvstatus);
+  update_status_minmax(nvstatus);
 
   now = time(NULL);
   if((logperiod != 0) && (now < nvstatus->last + logperiod))

@@ -249,11 +249,31 @@ void reinit_novra_status(struct novra_status_st *nvstatus){
   nvstatus->vber_max = 0.0;
 }
 
-void update_status(struct novra_status_st *nvstatus){
+int get_status(Receiver *r, struct novra_status_st *nvstatus){
   /*
-   * This is called after get_status() to update the min,max
-   * values in the loging interval (when the loging interal
-   * spans several device report cycles).
+   * Returns:
+   * -1 => error from getStatus
+   *  1 => unsupported device
+   */
+
+  if(r->getStatus() == false){
+    nvstatus->status = -1;
+    return(-1);
+  }
+
+  (void)r->updateStatus();	/* always return "true" */
+  nvstatus->status = 0;
+  memset(&nvstatus->param, 0, sizeof(struct novra_param_st));
+  fill_novra_param(r, &nvstatus->param);
+
+  return(0);
+}
+
+void update_status_minmax(struct novra_status_st *nvstatus){
+  /*
+   * This is called by each log_status_sXXX
+   * (which is called by log_status())
+   * to update the derived min,max values in the loging interval.
    */
 
   if(nvstatus->param.signal_strength_as_percentage <
@@ -293,26 +313,6 @@ void update_status(struct novra_status_st *nvstatus){
     nvstatus->vber_max = nvstatus->param.vber;
 
   nvstatus->uncorrectables_total += nvstatus->param.uncorrectables;
-}
-
-int get_status(Receiver *r, struct novra_status_st *nvstatus){
-  /*
-   * Returns:
-   * -1 => error from getStatus
-   *  1 => unsupported device
-   */
-
-  if(r->getStatus() == false){
-    nvstatus->status = -1;
-    return(-1);
-  }
-
-  (void)r->updateStatus();	/* always return "true" */
-  nvstatus->status = 0;
-  memset(&nvstatus->param, 0, sizeof(struct novra_param_st));
-  fill_novra_param(r, &nvstatus->param);
-
-  return(0);
 }
 
 void print_status(struct novra_status_st *nvstatus, int f_longdisplay){

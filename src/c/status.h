@@ -83,9 +83,9 @@ void check_param(Receiver *r);
 
 void init_novra_status(struct novra_status_st *nvstatus);
 void reinit_novra_status(struct novra_status_st *nvstatus);
-void update_status(struct novra_status_st *nvstatus);
 
 int get_status(Receiver *r, struct novra_status_st *nvstatus);
+void update_status_minmax(struct novra_status_st *nvstatus);
 void print_status(struct novra_status_st *nvstatus, int f_longdisplay);
 void print_statusw(struct novra_status_st *nvstatus, int f_longdisplay);
 void log_status(const char *fname,
