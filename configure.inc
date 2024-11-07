@@ -6,7 +6,6 @@
 INCLUDE=".include"
 Q='"'
 PREFIX=usr/local
-MANDIR=man
 
 INSTALL=install
 
@@ -54,7 +53,6 @@ case $os in
 	INCLUDE=include
 	Q=
 	PREFIX=usr
-	MANDIR=share/man
 	TCLSH=/usr/bin/tclsh
 	CORULE="%.o: %.c"
 	CCORULE="%.o: %.cc"
@@ -62,7 +60,7 @@ case $os in
 
 	if [ $flavor = redhat ]
 	then
-		TCLLIBDIR=share/tcl8.6
+	    TCLLIBDIR=share/tcl8.6
 	fi
 	;;
     Darwin)
@@ -82,7 +80,6 @@ configure_default () {
       -e "/@include@/ s||$INCLUDE|" \
       -e "/@q@/ s||$Q|g" \
       -e "/@PREFIX@/ s||$PREFIX|g" \
-      -e "/@MANDIR@/ s||$MANDIR|g" \
       -e "/@INSTALL@/ s||$INSTALL|" \
       -e "/@TCLSH@/ s||$TCLSH|" \
       -e "/@TCLLIBDIR@/ s||$TCLLIBDIR|" \
