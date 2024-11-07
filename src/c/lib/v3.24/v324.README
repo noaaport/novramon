@@ -1,3 +1,9 @@
+07nov2024 -
+
+Debian-12 was complaining about gettimeofday() not defined in timestamp.cpp.
+The solution was to include <time.h> (in addition to sys/time.h which
+is also required in that file). The original file is kept as timestamp.cpp-orig.
+
 04oct2024 -
 
 1) Compiling in Freebsd-14.1 was giving an error in the statements
@@ -37,8 +43,3 @@ which is obvously a typo. So I corrected
 #define _DATATYPE
 
 The original file was renamed "DataTypes.h-orig"
-
-
-
-
-
