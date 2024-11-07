@@ -3,6 +3,7 @@
 #include <stdio.h>
 #ifndef WINDOWS
 	#include <sys/time.h>
+	#include <time.h>
 #endif
 #ifdef WINDOWS
 	#include "Windows.h"
