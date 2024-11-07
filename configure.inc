@@ -62,7 +62,7 @@ case $os in
 
 	if [ $flavor = redhat ]
 	then
-		TCLLIBDIR=share
+		TCLLIBDIR=share/tcl8.6
 	fi
 	;;
     Darwin)

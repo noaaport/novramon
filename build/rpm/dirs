@@ -1,5 +1,5 @@
 usr/bin
-usr/share/novramon
+usr/share/tcl8.6/novramon
 usr/libexec/novramon
 usr/share/doc/novramon
 usr/share/man/man1
